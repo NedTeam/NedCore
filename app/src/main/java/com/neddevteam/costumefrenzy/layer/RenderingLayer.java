@@ -20,6 +20,12 @@ public class RenderingLayer implements Layer {
     private String dataResourceName;
     private AssetManager am;
 
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    private Bitmap bitmap;
+
     private boolean dynamic;
 
     public RenderingLayer(int imageResourceID){
@@ -57,8 +63,9 @@ public class RenderingLayer implements Layer {
             JSONObject object = new JSONObject(JSONUtils.loadStringFromAsset(am, dataResourceName));
             Bitmap map = (imageResourceID==0) ? RenderingUtils.parseRender(object, imageResourceName) :
                     RenderingUtils.parseRender(object,imageResourceID);
+            bitmap = map;
         } catch (JSONException e) {
-            Log.e("Snake-Remake",e.getMessage());
+            Log.e("CostumeFrenzy",e.getMessage());
         }
     }
 
