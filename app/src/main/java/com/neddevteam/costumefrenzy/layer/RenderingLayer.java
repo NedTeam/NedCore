@@ -1,6 +1,7 @@
 package com.neddevteam.costumefrenzy.layer;
 
 import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.util.Log;
 
@@ -15,6 +16,7 @@ import org.json.JSONObject;
  */
 public class RenderingLayer implements Layer {
 
+    private Resources res;
     private int imageResourceID;
     private String imageResourceName;
     private String dataResourceName;
@@ -28,7 +30,8 @@ public class RenderingLayer implements Layer {
 
     private boolean dynamic;
 
-    public RenderingLayer(int imageResourceID){
+    public RenderingLayer(Resources res,int imageResourceID){
+        this.res = res;
         this.imageResourceID=imageResourceID;
     }
 
@@ -62,7 +65,7 @@ public class RenderingLayer implements Layer {
         try {
             JSONObject object = new JSONObject(JSONUtils.loadStringFromAsset(am, dataResourceName));
             Bitmap map = (imageResourceID==0) ? RenderingUtils.parseRender(object, imageResourceName) :
-                    RenderingUtils.parseRender(object,imageResourceID);
+                    RenderingUtils.parseRender(res,object,imageResourceID);
             bitmap = map;
         } catch (JSONException e) {
             Log.e("CostumeFrenzy",e.getMessage());
