@@ -14,6 +14,11 @@ public class EventManager {
         registeredListeners = new ArrayList<Listener>();
     }
 
+    /**
+     * Adds {@code listener} to the list of classes that can define events
+     *
+     * @param listener
+     */
     public void register(Listener listener) {
         if(!registeredListeners.contains(listener)) {
             registeredListeners.add(listener);
