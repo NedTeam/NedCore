@@ -27,3 +27,6 @@ proguard/
 
 # Log Files
 *.log
+
+#Configurations files from workspace
+app/app.iml
