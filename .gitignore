@@ -29,4 +29,4 @@ proguard/
 *.log
 
 #Configurations files from workspace
-app/app.iml
+app/*.iml
