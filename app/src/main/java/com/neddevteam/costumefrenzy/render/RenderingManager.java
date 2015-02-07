@@ -24,17 +24,4 @@ public class RenderingManager {
         }
     }
 
-    public static void renderLayersDyn(Canvas canvas,List<Layer> layers){
-        boolean nonstatic = false;
-        for(Layer l:layers){
-            if(l instanceof RenderingLayer){
-                RenderingLayer layer = (RenderingLayer) l;
-                if(nonstatic || !layer.isStaticLayer()){
-                    canvas.drawBitmap(layer.getBitmap(),0,0,new Paint());
-                    nonstatic = true;
-                }
-            }
-        }
-    }
-
 }
