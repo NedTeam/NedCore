@@ -2,6 +2,8 @@ package com.neddevteam.costumefrenzy.render;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.view.View;
 
 import com.neddevteam.costumefrenzy.layer.Layer;
@@ -15,8 +17,8 @@ import java.util.List;
  * Created by mcat on 7/02/15.
  */
 public class RenderingView extends View{
-    View w = null;
-    List<Layer> layers = new ArrayList<Layer>();
+
+    private List<Layer> layers = new ArrayList<Layer>();
 
     public RenderingView(Context context) {
         super(context);
@@ -24,6 +26,7 @@ public class RenderingView extends View{
 
     @Override
     public void onDraw(Canvas canvas){
+        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         Collections.sort(layers, new LayerComparator());
         RenderingManager.renderLayers(canvas,layers);
     }
@@ -33,4 +36,7 @@ public class RenderingView extends View{
     }
 
 
+    public void removeLayer(int i) {
+        layers.remove(i);
+    }
 }
