@@ -13,18 +13,15 @@ import java.util.Map;
  * Created by gdefermin on 1/31/15.
  */
 public class EventManager {
-    private HashMap<Class, List<Method>> registeredMethods;
+    private static HashMap<Class, List<Method>> registeredMethods = new HashMap<Class,List<Method>>();
 
-    public EventManager() {
-        registeredMethods = new HashMap<>();
-    }
 
     /**
      * Adds {@code cls} to the list of classes that can define events
      *
      * @param cls class to be registered
      */
-    public void register(Class cls) {
+    public static void register(Class cls) {
         //Check that class implements Listener and isn't already registered
         if(!Listener.class.isAssignableFrom(cls) || registeredMethods.containsKey(cls))
             return;
@@ -41,7 +38,7 @@ public class EventManager {
         }
     }
 
-    public void callEvent(final Event event){
+    public static void callEvent(final Event event){
         new Thread(){
             @Override
             public void run(){
