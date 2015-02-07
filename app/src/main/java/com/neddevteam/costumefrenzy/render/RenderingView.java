@@ -5,8 +5,10 @@ import android.graphics.Canvas;
 import android.view.View;
 
 import com.neddevteam.costumefrenzy.layer.Layer;
+import com.neddevteam.costumefrenzy.utils.LayerComparator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -22,6 +24,13 @@ public class RenderingView extends View{
 
     @Override
     public void onDraw(Canvas canvas){
+        Collections.sort(layers, new LayerComparator());
         RenderingManager.renderLayers(canvas,layers);
     }
+
+    public void addLayer(Layer l){
+        layers.add(l);
+    }
+
+
 }
