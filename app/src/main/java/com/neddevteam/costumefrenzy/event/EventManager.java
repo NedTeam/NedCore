@@ -45,7 +45,10 @@ public class EventManager {
                 for(Map.Entry<Class, List<Method>> entry: registeredMethods.entrySet()){
                     for(Method method: entry.getValue()){
                         try {
-                            method.invoke(entry.getKey().newInstance(), event);
+                            if(method.getParameterTypes().length==1 &&
+                                    method.getParameterTypes()[0].equals(event.getClass())){
+                                method.invoke(entry.getKey().newInstance(), event);
+                            }
                         } catch (InstantiationException e) {
                             Log.e("CostumeFrenzy", e.toString());
                         } catch (IllegalAccessException e) {

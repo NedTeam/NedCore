@@ -10,6 +10,11 @@ public class TestEventHandler implements Listener {
 
     @HandleEvent
     public void testEvent(TestEvent test){
-        System.out.println("Evento!"+test.getA());
+        System.out.println("Evento:"+test.getA());
+    }
+
+    @HandleEvent
+    public void testEvent(TestEvent2 test){
+        System.out.println("Evento2:"+test.getA());
     }
 }

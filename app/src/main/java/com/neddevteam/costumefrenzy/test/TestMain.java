@@ -9,6 +9,6 @@ public class TestMain {
     public static void main(String args[]){
         System.out.println("Test");
         EventManager.register(TestEventHandler.class);
-        EventManager.callEvent(new TestEvent(5));
+        EventManager.callEvent(new TestEvent2(5));
     }
 }
