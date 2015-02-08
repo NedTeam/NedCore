@@ -19,6 +19,7 @@ import java.util.List;
 public class RenderingView extends View{
 
     private List<Layer> layers = new ArrayList<Layer>();
+    private LayerComparator comparator = new LayerComparator();
 
     public RenderingView(Context context) {
         super(context);
@@ -35,6 +36,22 @@ public class RenderingView extends View{
         layers.add(l);
     }
 
+    private void addLayerRecursive(Layer l, int currentPos){
+        //TODO
+        Layer l2 = layers.get(currentPos);
+        int comparison = comparator.compare(l,l2);
+
+        if(comparison == 0)
+            layers.add(currentPos, l);
+        else if(comparison < 0) {
+            int newPos = currentPos/2;
+            addLayerRecursive(l, newPos);
+        }
+        else {
+            int newPos = currentPos*3/2;
+            addLayerRecursive(l, newPos);
+        }
+    }
 
     public void removeLayer(int i) {
         layers.remove(i);
