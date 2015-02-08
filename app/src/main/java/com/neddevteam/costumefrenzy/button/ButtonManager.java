@@ -1,5 +1,7 @@
 package com.neddevteam.costumefrenzy.button;
 
+import android.util.Log;
+
 import com.neddevteam.costumefrenzy.layer.ButtonLayer;
 import com.neddevteam.costumefrenzy.layer.Layer;
 import com.neddevteam.costumefrenzy.render.RenderingView;
@@ -18,7 +20,7 @@ public class ButtonManager {
                         int xRel = x-corner.getX();
                         int yRel = y-corner.getY();
                         if(button.checkClicked(xRel,yRel)){
-                            //TODO Call event
+                            Log.i("NedCore", "Test!");
                             break;
                         }
                     }
