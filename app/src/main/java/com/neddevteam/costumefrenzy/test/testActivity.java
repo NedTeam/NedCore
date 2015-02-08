@@ -4,18 +4,15 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.view.GestureDetectorCompat;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
-import com.neddevteam.costumefrenzy.button.Button;
 import com.neddevteam.costumefrenzy.button.ButtonManager;
-import com.neddevteam.costumefrenzy.button.SquareButton;
-import com.neddevteam.costumefrenzy.layer.ButtonLayer;
 import com.neddevteam.costumefrenzy.layer.RenderingLayer;
 import com.neddevteam.costumefrenzy.render.RenderingView;
 import com.neddevteam.costumefrenzy.utils.BitmapUtils;
-import com.neddevteam.costumefrenzy.utils.Point;
 
 import costumefrenzy.nedteam.com.costumefrenzy.R;
 
@@ -24,8 +21,8 @@ import costumefrenzy.nedteam.com.costumefrenzy.R;
  */
 public class testActivity extends Activity implements
         GestureDetector.OnGestureListener{
-
     private RenderingView view;
+    private GestureDetectorCompat mDetector;
 
     public testActivity(){
 
@@ -34,19 +31,17 @@ public class testActivity extends Activity implements
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        view = new RenderingView(getBaseContext());
         final Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.circle);
         final Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.square);
         final Bitmap bitmap3 = BitmapFactory.decodeResource(getResources(), R.drawable.test);
         final Bitmap bitmap4 = bitmap1.copy(bitmap1.getConfig(),true);
-        final Button button1 = new SquareButton(new Point(0,0),new Point(100,100));
-        final ButtonLayer buttonLayer = new ButtonLayer(10);
-        buttonLayer.addButton(button1);
+        view = new RenderingView(getBaseContext());
         view.addLayer(new RenderingLayer(bitmap2,-1));
         view.addLayer(new RenderingLayer(bitmap4,1));
         view.addLayer(new RenderingLayer(bitmap3, 0));
-        view.addLayer(buttonLayer);
         setContentView(view);
+
+        mDetector = new GestureDetectorCompat(this,this);
 
         new Thread(new Runnable() {
             @Override
@@ -61,10 +56,16 @@ public class testActivity extends Activity implements
     }
 
     @Override
+    public boolean onTouchEvent(MotionEvent e){
+        this.mDetector.onTouchEvent(e);
+        return this.onTouchEvent(e);
+    }
+
+    @Override
     public boolean onDown(MotionEvent e) {
-        Log.i("NedCore","Test");
-        ButtonManager.checkClick(view, (int)e.getX(), (int)e.getY());
-        return false;
+        Log.i("TEST", Float.toString(e.getRawX()) + Float.toString(e.getRawY()));
+        ButtonManager.checkClick(view, (int)e.getRawX(), (int)e.getRawY());
+        return true;
     }
 
     @Override
@@ -74,7 +75,7 @@ public class testActivity extends Activity implements
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        ButtonManager.checkClick(view, (int)e.getX(), (int)e.getY());
+        ButtonManager.checkClick(view, (int)e.getRawX(), (int)e.getRawY());
         return true;
     }
 
