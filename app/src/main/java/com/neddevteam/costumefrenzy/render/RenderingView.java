@@ -53,6 +53,10 @@ public class RenderingView extends View{
         }
     }
 
+    public List<Layer> getLayers(){
+        return layers;
+    }
+
     public void removeLayer(int i) {
         layers.remove(i);
     }

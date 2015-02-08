@@ -26,8 +26,8 @@ public class MapButton extends Button {
     }
 
     @Override
-    public boolean checkClicked(int xrel, int yrel) {
-        return BitmapUtils.checkColor(bitmap,xrel,yrel,0xff000000);
+    public boolean checkClicked(int xRel, int yRel) {
+        return BitmapUtils.checkColor(bitmap,xRel,yRel,0xff000000);
     }
 
 }
