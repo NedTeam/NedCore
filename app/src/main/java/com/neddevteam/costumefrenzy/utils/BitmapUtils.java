@@ -20,4 +20,7 @@ public class BitmapUtils {
         return bitmap;
     }
 
+    public static boolean checkColor(Bitmap bitmap, int xrel, int yrel, int color) {
+        return bitmap.getPixel(xrel,yrel) == color;
+    }
 }
