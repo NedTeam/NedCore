@@ -2,23 +2,39 @@ package com.neddevteam.costumefrenzy.layer;
 
 import android.graphics.Bitmap;
 
+import com.neddevteam.costumefrenzy.utils.Point;
+
+import java.util.HashMap;
+
 /**
  * Created by gdefermin on 10/23/14.
  */
 public class RenderingLayer implements Layer {
 
     private int priority;
-    private Bitmap bitmap;
+    private HashMap<Point,Bitmap> bitmaps;
     private boolean staticLayer;
 
     public RenderingLayer(Bitmap bitmap, int priority){
         this(bitmap,priority,true);
     }
     public RenderingLayer(Bitmap bitmap, int priority, boolean staticLayer){
-        this.bitmap = bitmap;
+        this(bitmap,new Point(0,0), priority, staticLayer);
+    }
+    public RenderingLayer(Bitmap bitmap, Point position, int priority){
+        this(bitmap,position, priority, true);
+    }
+    public RenderingLayer(Bitmap bitmap, Point position, int priority, boolean staticLayer){
+        bitmaps = new HashMap<>();
+        bitmaps.put(position, bitmap);
         this.priority = priority;
         this.staticLayer = staticLayer;
     }
+
+    public void addBitmap(Bitmap bitmap, Point position){
+        bitmaps.put(position, bitmap);
+    }
+
 
     @Override
     public boolean isDrawable() {
@@ -30,8 +46,8 @@ public class RenderingLayer implements Layer {
         return priority;
     }
 
-    public Bitmap getBitmap() {
-        return bitmap;
+    public HashMap<Point,Bitmap> getBitmaps() {
+        return bitmaps;
     }
 
     public boolean isStaticLayer() { return staticLayer; }

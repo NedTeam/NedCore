@@ -53,7 +53,11 @@ public class testActivity extends Activity {
         //Add layers
         view = new RenderingView(getBaseContext());
         view.addLayer(new RenderingLayer(bitmap2,-1));
-        view.addLayer(new RenderingLayer(bitmap4,1));
+
+        RenderingLayer testLayer = new RenderingLayer(bitmap4,1);
+        testLayer.addBitmap(bitmap4, new Point(300,400));
+        view.addLayer(testLayer);
+        
         view.addLayer(new RenderingLayer(bitmap3, 0));
         view.addLayer(buttonLayer);
         setContentView(view);
