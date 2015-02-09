@@ -1,7 +1,7 @@
-package com.neddevteam.costumefrenzy.button;
+package com.neddevteam.costumefrenzy.event.predefined;
 
-import com.neddevteam.costumefrenzy.button.Button;
-import com.neddevteam.costumefrenzy.event.Event;
+import com.neddevteam.costumefrenzy.event.predefined.ButtonPressedEvent;
+import com.neddevteam.costumefrenzy.button.event.ButtonReleasedEvent;
 import com.neddevteam.costumefrenzy.event.HandleEvent;
 import com.neddevteam.costumefrenzy.event.Listener;
 

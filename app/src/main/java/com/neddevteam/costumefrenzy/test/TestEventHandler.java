@@ -2,9 +2,9 @@ package com.neddevteam.costumefrenzy.test;
 
 import android.util.Log;
 
-import com.neddevteam.costumefrenzy.button.ButtonClickedEvent;
-import com.neddevteam.costumefrenzy.button.ButtonPressedEvent;
-import com.neddevteam.costumefrenzy.button.ButtonReleasedEvent;
+import com.neddevteam.costumefrenzy.event.predefined.ButtonClickedEvent;
+import com.neddevteam.costumefrenzy.event.predefined.ButtonPressedEvent;
+import com.neddevteam.costumefrenzy.button.event.ButtonReleasedEvent;
 import com.neddevteam.costumefrenzy.event.HandleEvent;
 import com.neddevteam.costumefrenzy.event.Listener;
 

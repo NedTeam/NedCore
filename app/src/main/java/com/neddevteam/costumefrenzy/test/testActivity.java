@@ -7,10 +7,10 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 
 import com.neddevteam.costumefrenzy.button.Button;
-import com.neddevteam.costumefrenzy.button.ButtonClickedEvent;
+import com.neddevteam.costumefrenzy.event.predefined.ButtonClickedEvent;
 import com.neddevteam.costumefrenzy.button.ButtonManager;
-import com.neddevteam.costumefrenzy.button.ButtonPressedEvent;
-import com.neddevteam.costumefrenzy.button.ButtonReleasedEvent;
+import com.neddevteam.costumefrenzy.event.predefined.ButtonPressedEvent;
+import com.neddevteam.costumefrenzy.button.event.ButtonReleasedEvent;
 import com.neddevteam.costumefrenzy.button.MapButton;
 import com.neddevteam.costumefrenzy.event.EventManager;
 import com.neddevteam.costumefrenzy.layer.ButtonLayer;

@@ -1,5 +1,6 @@
-package com.neddevteam.costumefrenzy.button;
+package com.neddevteam.costumefrenzy.event.predefined;
 
+import com.neddevteam.costumefrenzy.button.Button;
 import com.neddevteam.costumefrenzy.event.Event;
 
 /**

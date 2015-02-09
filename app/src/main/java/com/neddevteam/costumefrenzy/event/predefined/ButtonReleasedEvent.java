@@ -1,15 +1,15 @@
-package com.neddevteam.costumefrenzy.button;
+package com.neddevteam.costumefrenzy.event.predefined;
 
+import com.neddevteam.costumefrenzy.button.Button;
 import com.neddevteam.costumefrenzy.event.Event;
 
 /**
  * Created by gdefermin on 2/9/15.
  */
-public class ButtonPressedEvent implements Event {
-
+public class ButtonReleasedEvent implements Event {
     private Button button;
 
-    public ButtonPressedEvent(Button button){
+    public ButtonReleasedEvent(Button button){
         this.button = button;
     }
 
