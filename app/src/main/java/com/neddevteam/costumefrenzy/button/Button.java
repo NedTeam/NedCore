@@ -17,4 +17,9 @@ public abstract class Button {
     public abstract boolean checkClicked(int xrel,int yrel);
 
     public UUID getUUID(){return uuid;}
+
+    public boolean equals(Button button){
+        if(button==null)return false;
+        return getUUID().equals(button.getUUID());
+    }
 }

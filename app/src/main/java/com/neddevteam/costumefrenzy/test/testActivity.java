@@ -4,15 +4,20 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v4.view.GestureDetectorCompat;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 
+import com.neddevteam.costumefrenzy.button.Button;
+import com.neddevteam.costumefrenzy.button.ButtonClickedEvent;
 import com.neddevteam.costumefrenzy.button.ButtonManager;
+import com.neddevteam.costumefrenzy.button.ButtonPressedEvent;
+import com.neddevteam.costumefrenzy.button.ButtonReleasedEvent;
+import com.neddevteam.costumefrenzy.button.SquareButton;
+import com.neddevteam.costumefrenzy.event.EventManager;
+import com.neddevteam.costumefrenzy.layer.ButtonLayer;
 import com.neddevteam.costumefrenzy.layer.RenderingLayer;
 import com.neddevteam.costumefrenzy.render.RenderingView;
 import com.neddevteam.costumefrenzy.utils.BitmapUtils;
+import com.neddevteam.costumefrenzy.utils.Point;
 
 import costumefrenzy.nedteam.com.costumefrenzy.R;
 
@@ -29,14 +34,23 @@ public class testActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        //Register events
+        EventManager.register(TestEventHandler.class);
+        //Bitmaps
         final Bitmap bitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.circle);
         final Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.square);
         final Bitmap bitmap3 = BitmapFactory.decodeResource(getResources(), R.drawable.test);
-        final Bitmap bitmap4 = bitmap1.copy(bitmap1.getConfig(),true);
+        final Bitmap bitmap4 = bitmap1.copy(bitmap1.getConfig(), true);
+        //Buttons
+        final ButtonLayer buttonLayer = new ButtonLayer(10);
+        final Button testButton = new SquareButton(new Point(0,0),new Point(500,500));
+        buttonLayer.addButton(testButton);
+        //Add layers
         view = new RenderingView(getBaseContext());
         view.addLayer(new RenderingLayer(bitmap2,-1));
         view.addLayer(new RenderingLayer(bitmap4,1));
         view.addLayer(new RenderingLayer(bitmap3, 0));
+        view.addLayer(buttonLayer);
         setContentView(view);
 
         new Thread(new Runnable() {
@@ -64,17 +78,28 @@ public class testActivity extends Activity {
         }
     }
 
-
+    private Button currentButton = null;
     public boolean onDown(MotionEvent e) {
-        Log.i("DOWN", Float.toString(e.getRawX()) + Float.toString(e.getRawY()));
-        ButtonManager.checkClick(view, (int)e.getRawX(), (int)e.getRawY());
+        //Log.i("DOWN", Float.toString(e.getRawX()) + Float.toString(e.getRawY()));
+        Button button = ButtonManager.checkClick(view, (int)e.getRawX(), (int)e.getRawY());
+        if(button!=null){
+            currentButton = button;
+            EventManager.callEvent(new ButtonPressedEvent(button));
+        }
         return false;
     }
 
 
     public boolean onUp(MotionEvent e) {
-        Log.i("UP", Float.toString(e.getRawX()) + Float.toString(e.getRawY()));
-        ButtonManager.checkClick(view, (int)e.getRawX(), (int)e.getRawY());
+        //Log.i("UP", Float.toString(e.getRawX()) + Float.toString(e.getRawY()));
+        Button button = ButtonManager.checkClick(view, (int)e.getRawX(), (int)e.getRawY());
+        if(button!=null) {
+            EventManager.callEvent(new ButtonReleasedEvent(button));
+            if(button.equals(currentButton)){
+                EventManager.callEvent(new ButtonClickedEvent(button));
+            }
+        }
+        currentButton = null;
         return true;
     }
 }

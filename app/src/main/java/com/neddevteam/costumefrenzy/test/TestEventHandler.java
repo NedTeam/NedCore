@@ -1,5 +1,10 @@
 package com.neddevteam.costumefrenzy.test;
 
+import android.util.Log;
+
+import com.neddevteam.costumefrenzy.button.ButtonClickedEvent;
+import com.neddevteam.costumefrenzy.button.ButtonPressedEvent;
+import com.neddevteam.costumefrenzy.button.ButtonReleasedEvent;
 import com.neddevteam.costumefrenzy.event.HandleEvent;
 import com.neddevteam.costumefrenzy.event.Listener;
 
@@ -9,12 +14,17 @@ import com.neddevteam.costumefrenzy.event.Listener;
 public class TestEventHandler implements Listener {
 
     @HandleEvent
-    public void testEvent(TestEvent test){
-        System.out.println("Evento:"+test.getA());
+    public void press(ButtonPressedEvent test){
+        Log.i("NedCore","Press:"+test.getButton().getUUID().toString());
     }
 
     @HandleEvent
-    public void testEvent(TestEvent2 test){
-        System.out.println("Evento2:"+test.getA());
+    public void release(ButtonReleasedEvent test){
+        Log.i("NedCore","Release:"+test.getButton().getUUID().toString());
+    }
+
+    @HandleEvent
+    public void click(ButtonClickedEvent test){
+        Log.i("NedCore","Click:"+test.getButton().getUUID().toString());
     }
 }
