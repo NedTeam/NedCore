@@ -35,6 +35,14 @@ public class RenderingLayer implements Layer {
         bitmaps.put(position, bitmap);
     }
 
+    public void removeBitmap(Point position){
+        bitmaps.remove(position);
+    }
+
+    public void moveBitmap(Point origin, Point destination){
+        addBitmap(bitmaps.get(origin), destination);
+        removeBitmap(origin);
+    }
 
     @Override
     public boolean isDrawable() {
