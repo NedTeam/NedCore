@@ -14,6 +14,8 @@ import com.neddevteam.costumefrenzy.render.RenderingView;
 import com.neddevteam.costumefrenzy.utils.BitmapUtils;
 import com.neddevteam.costumefrenzy.utils.Point;
 
+import java.util.Random;
+
 import costumefrenzy.nedteam.com.costumefrenzy.R;
 
 /**
@@ -55,11 +57,17 @@ public class testActivity extends GameActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    Thread.sleep(10000);
-                    BitmapUtils.setColorToAll(bitmap4, 0xff000000);
-                } catch (InterruptedException e) {}
-                getView().postInvalidate();
+                Random random = new Random();
+                while(true){
+                    int color = 0xff000000 + 256 * 256 * random.nextInt(256) + 256 * random.nextInt(256)
+                        + random.nextInt(256);
+                    try {
+                        Thread.sleep(1000);
+                        BitmapUtils.setColorToAll(bitmap4, color);
+                    } catch (InterruptedException e) {}
+                    getView().postInvalidate();
+                }
+
             }
         }).start();
     }
