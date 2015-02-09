@@ -19,10 +19,8 @@ import costumefrenzy.nedteam.com.costumefrenzy.R;
 /**
  * Created by mcat on 7/02/15.
  */
-public class testActivity extends Activity implements
-        GestureDetector.OnGestureListener{
+public class testActivity extends Activity {
     private RenderingView view;
-    private GestureDetectorCompat mDetector;
 
     public testActivity(){
 
@@ -41,8 +39,6 @@ public class testActivity extends Activity implements
         view.addLayer(new RenderingLayer(bitmap3, 0));
         setContentView(view);
 
-        mDetector = new GestureDetectorCompat(this,this);
-
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -57,40 +53,28 @@ public class testActivity extends Activity implements
 
     @Override
     public boolean onTouchEvent(MotionEvent e){
-        this.mDetector.onTouchEvent(e);
-        return this.onTouchEvent(e);
+        int action = e.getAction();
+        switch(action) {
+            case MotionEvent.ACTION_DOWN:
+                return onDown(e);
+            case MotionEvent.ACTION_UP:
+                return onUp(e);
+            default:
+                return false;
+        }
     }
 
-    @Override
+
     public boolean onDown(MotionEvent e) {
-        Log.i("TEST", Float.toString(e.getRawX()) + Float.toString(e.getRawY()));
+        Log.i("DOWN", Float.toString(e.getRawX()) + Float.toString(e.getRawY()));
         ButtonManager.checkClick(view, (int)e.getRawX(), (int)e.getRawY());
-        return true;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent e) {
-
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        ButtonManager.checkClick(view, (int)e.getRawX(), (int)e.getRawY());
-        return true;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
         return false;
     }
 
-    @Override
-    public void onLongPress(MotionEvent e) {
 
-    }
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        return false;
+    public boolean onUp(MotionEvent e) {
+        Log.i("UP", Float.toString(e.getRawX()) + Float.toString(e.getRawY()));
+        ButtonManager.checkClick(view, (int)e.getRawX(), (int)e.getRawY());
+        return true;
     }
 }
