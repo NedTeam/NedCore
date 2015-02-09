@@ -11,7 +11,7 @@ import com.neddevteam.costumefrenzy.button.ButtonClickedEvent;
 import com.neddevteam.costumefrenzy.button.ButtonManager;
 import com.neddevteam.costumefrenzy.button.ButtonPressedEvent;
 import com.neddevteam.costumefrenzy.button.ButtonReleasedEvent;
-import com.neddevteam.costumefrenzy.button.SquareButton;
+import com.neddevteam.costumefrenzy.button.MapButton;
 import com.neddevteam.costumefrenzy.event.EventManager;
 import com.neddevteam.costumefrenzy.layer.ButtonLayer;
 import com.neddevteam.costumefrenzy.layer.RenderingLayer;
@@ -34,6 +34,8 @@ public class testActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        //Action bar
+        getActionBar().hide();
         //Register events
         EventManager.register(TestEventHandler.class);
         //Bitmaps
@@ -43,7 +45,7 @@ public class testActivity extends Activity {
         final Bitmap bitmap4 = bitmap1.copy(bitmap1.getConfig(), true);
         //Buttons
         final ButtonLayer buttonLayer = new ButtonLayer(10);
-        final Button testButton = new SquareButton(new Point(0,0),new Point(500,500));
+        final Button testButton = new MapButton(bitmap3,new Point(0,0));
         buttonLayer.addButton(testButton);
         //Add layers
         view = new RenderingView(getBaseContext());
