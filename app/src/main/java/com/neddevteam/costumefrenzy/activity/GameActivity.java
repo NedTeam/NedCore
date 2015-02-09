@@ -13,7 +13,8 @@ import com.neddevteam.costumefrenzy.event.predefined.ButtonReleasedEvent;
 import com.neddevteam.costumefrenzy.render.RenderingView;
 
 /**
- * Created by mcat on 9/02/15.
+ * To create a custom activity, extend this class and override {@link #onCreate(android.os.Bundle)}<br>
+ *     Add layers to the default view (obtained by {@link #getView()}) to draw elements on screen.
  */
 public class GameActivity extends Activity {
 
@@ -75,6 +76,11 @@ public class GameActivity extends Activity {
         return true;
     }
 
+    /**
+     * Returns the view that is used to draw elements in screen.<br>
+     *     To do so, add layers to it using {@link com.neddevteam.costumefrenzy.render.RenderingView#addLayer(com.neddevteam.costumefrenzy.layer.Layer)}
+     * @return view
+     */
     public RenderingView getView(){
          return view;
     }
