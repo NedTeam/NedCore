@@ -12,6 +12,7 @@ import com.neddevteam.costumefrenzy.utils.Point;
  */
 public class ButtonManager {
     public static void checkClick(RenderingView w,int x,int y){
+        // Is this in the correct order?
         for(Layer l:w.getLayers()){
             if(l instanceof ButtonLayer){
                 for(Button button:((ButtonLayer) l).getButtons()){

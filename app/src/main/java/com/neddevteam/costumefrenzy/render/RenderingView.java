@@ -37,7 +37,7 @@ public class RenderingView extends View{
     }
 
     private void addLayerRecursive(Layer l, int currentPos){
-        //TODO
+        //TODO (albertcp)
         Layer l2 = layers.get(currentPos);
         int comparison = comparator.compare(l,l2);
 
