@@ -26,6 +26,7 @@ import costumefrenzy.nedteam.com.costumefrenzy.R;
  */
 public class testActivity extends Activity {
     private RenderingView view;
+    private int statusBarHeight;
 
     public testActivity(){
 
@@ -34,6 +35,8 @@ public class testActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        //Get status bar height
+        statusBarHeight = getStatusBarHeight();
         //Action bar
         getActionBar().hide();
         //Register events
@@ -67,6 +70,15 @@ public class testActivity extends Activity {
         }).start();
     }
 
+    private int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent e){
         int action = e.getAction();
@@ -83,7 +95,7 @@ public class testActivity extends Activity {
     private Button currentButton = null;
     public boolean onDown(MotionEvent e) {
         //Log.i("DOWN", Float.toString(e.getRawX()) + Float.toString(e.getRawY()));
-        Button button = ButtonManager.checkClick(view, (int)e.getRawX(), (int)e.getRawY());
+        Button button = ButtonManager.checkClick(view, (int)e.getRawX(), (int)e.getRawY() - statusBarHeight);
         if(button!=null){
             currentButton = button;
             EventManager.callEvent(new ButtonPressedEvent(button));
@@ -94,7 +106,7 @@ public class testActivity extends Activity {
 
     public boolean onUp(MotionEvent e) {
         //Log.i("UP", Float.toString(e.getRawX()) + Float.toString(e.getRawY()));
-        Button button = ButtonManager.checkClick(view, (int)e.getRawX(), (int)e.getRawY());
+        Button button = ButtonManager.checkClick(view, (int)e.getRawX(), (int)e.getRawY() - statusBarHeight);
         if(button!=null) {
             EventManager.callEvent(new ButtonReleasedEvent(button));
             if(button.equals(currentButton)){
