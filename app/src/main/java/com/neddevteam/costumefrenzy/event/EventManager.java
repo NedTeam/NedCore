@@ -2,6 +2,8 @@ package com.neddevteam.costumefrenzy.event;
 
 import android.util.Log;
 
+import com.neddevteam.costumefrenzy.utils.CollectionUtils;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -42,21 +44,29 @@ public class EventManager {
         new Thread(){
             @Override
             public void run(){
+                List<MethodWrapper> methods = new ArrayList<MethodWrapper>();
                 for(Map.Entry<Class, List<Method>> entry: registeredMethods.entrySet()){
                     for(Method method: entry.getValue()){
-                        try {
-                            if(method.getParameterTypes().length==1 &&
-                                    method.getParameterTypes()[0].equals(event.getClass())){
-                                method.invoke(entry.getKey().newInstance(), event);
-                            }
-                        } catch (InstantiationException e) {
-                            Log.e("CostumeFrenzy", e.toString());
-                        } catch (IllegalAccessException e) {
-                            Log.e("CostumeFrenzy", e.toString());
-                        } catch (InvocationTargetException e) {
-                            Log.e("CostumeFrenzy", e.toString());
+                        if(method.getParameterTypes().length==1 &&
+                                method.getParameterTypes()[0].equals(event.getClass())){
+                            EventPriority priority = method.getAnnotation(HandleEvent.class).priority();
+                            CollectionUtils.sortedInsertion(methods,new MethodWrapperComparator(),
+                                    new MethodWrapper(method,priority));
                         }
                     }
+                }
+                for(int i=methods.size()-1;i>=0 && !event.isCancelled();i--){
+                    Method m = methods.get(i).getM();
+                    try {
+                        m.invoke(m.getDeclaringClass().newInstance(), event);
+                    } catch (InstantiationException e) {
+                        Log.e("CostumeFrenzy", e.toString());
+                    } catch (IllegalAccessException e) {
+                        Log.e("CostumeFrenzy", e.toString());
+                    } catch (InvocationTargetException e) {
+                        Log.e("CostumeFrenzy", e.toString());
+                    }
+
                 }
             }
         }.start();

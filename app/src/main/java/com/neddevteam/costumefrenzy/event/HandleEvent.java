@@ -13,4 +13,5 @@ import java.lang.annotation.Target;
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface HandleEvent {
+    public EventPriority priority() default EventPriority.MEDIUM;
 }

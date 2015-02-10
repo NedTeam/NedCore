@@ -6,7 +6,7 @@ import com.neddevteam.costumefrenzy.event.Event;
 /**
  * Created by gdefermin on 2/9/15.
  */
-public class ButtonPressedEvent implements Event {
+public class ButtonPressedEvent extends Event {
 
     private Button button;
 

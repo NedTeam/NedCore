@@ -8,9 +8,9 @@ import android.view.View;
 
 import com.neddevteam.costumefrenzy.layer.Layer;
 import com.neddevteam.costumefrenzy.utils.LayerComparator;
+import com.neddevteam.costumefrenzy.utils.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -28,29 +28,12 @@ public class RenderingView extends View{
     @Override
     public void onDraw(Canvas canvas){
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-        Collections.sort(layers, new LayerComparator());
+        /*Collections.sort(layers, new LayerComparator());*/
         RenderingManager.renderLayers(canvas,layers);
     }
 
     public void addLayer(Layer l){
-        layers.add(l);
-    }
-
-    private void addLayerRecursive(Layer l, int currentPos){
-        //TODO (albertcp)
-        Layer l2 = layers.get(currentPos);
-        int comparison = comparator.compare(l,l2);
-
-        if(comparison == 0)
-            layers.add(currentPos, l);
-        else if(comparison < 0) {
-            int newPos = currentPos/2;
-            addLayerRecursive(l, newPos);
-        }
-        else {
-            int newPos = currentPos*3/2;
-            addLayerRecursive(l, newPos);
-        }
+        CollectionUtils.sortedInsertion(layers, new LayerComparator(), l);
     }
 
     public List<Layer> getLayers(){

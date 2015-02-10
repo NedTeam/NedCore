@@ -5,7 +5,7 @@ import com.neddevteam.costumefrenzy.event.Event;
 /**
  * Created by mcat on 7/02/15.
  */
-public class TestEvent implements Event {
+public class TestEvent extends Event {
     private int a = 0;
     public TestEvent(int a){
         this.a = a;
