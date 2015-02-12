@@ -27,6 +27,7 @@ public class PhysicsEngine {
             //VELOCITY IS IN PIXELS/MS!!!!!!!!!!!!!!!
             Vector2f vel = props.getVelocity();
             props.setLocation(props.getLocation().add(vel.multiply(deltaT)));
+            //Log.i("NedCore",props.getVelocity().getMod()+"");
         }
     }
 }

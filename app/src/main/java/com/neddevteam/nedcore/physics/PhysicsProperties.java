@@ -18,6 +18,7 @@ public class PhysicsProperties {
     public PhysicsProperties(Vector2f location, int mass){
         this.location = location;
         this.mass = mass;
+        velocity = new Vector2f(0,0);
     }
 
     public List<Vector2f> getForces() {

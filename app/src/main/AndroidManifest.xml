@@ -6,7 +6,7 @@
         android:targetSdkVersion="21" />
     <application android:icon="@drawable/ic_launcher" android:label="Test">
         <activity
-            android:name="com.neddevteam.costumefrenzy.test.testActivity"
+            android:name="com.neddevteam.nedcore.test.testActivity"
             android:exported="true">
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />

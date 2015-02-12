@@ -12,6 +12,10 @@ public class Point {
         this.x = x;
         this.y = y;
     }
+    public Point(Vector2f vector){
+        this.x = (int)vector.getX();
+        this.y = (int)vector.getY();
+    }
 
     public int getX() {
         return x;
@@ -27,5 +31,9 @@ public class Point {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public boolean equals(Point p2){
+        return x==p2.getX() && y==p2.getY();
     }
 }

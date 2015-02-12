@@ -10,11 +10,12 @@ import com.neddevteam.nedcore.button.MapButton;
 import com.neddevteam.nedcore.event.EventManager;
 import com.neddevteam.nedcore.layer.ButtonLayer;
 import com.neddevteam.nedcore.layer.RenderingLayer;
+import com.neddevteam.nedcore.physics.GameObject;
+import com.neddevteam.nedcore.physics.PhysicsProperties;
+import com.neddevteam.nedcore.physics.World;
 import com.neddevteam.nedcore.render.RenderingView;
-import com.neddevteam.nedcore.utils.BitmapUtils;
 import com.neddevteam.nedcore.utils.Point;
-
-import java.util.Random;
+import com.neddevteam.nedcore.utils.Vector2f;
 
 import costumefrenzy.nedteam.com.costumefrenzy.R;
 
@@ -45,31 +46,18 @@ public class testActivity extends GameActivity {
         //Add layers
         RenderingView view = getView();
         view.addLayer(new RenderingLayer(bitmap2,-1));
-
-        RenderingLayer testLayer = new RenderingLayer(bitmap4,1);
-        testLayer.addBitmap(bitmap4, new Point(300,400));
-        view.addLayer(testLayer);
-        
+        //Physics test
+        RenderingLayer layer = new RenderingLayer(bitmap4,new Point(50,50),10,true);
+        World w = new World(new Vector2f(0,-9.8f),layer, view);
+        GameObject obj = new GameObject(bitmap4,new PhysicsProperties(new Vector2f(50,50),100));
+        w.addObject(obj);
+        obj.applyForce(new Vector2f(0.001f,0));
+        //Add layers to view
+        view.addLayer(layer);
         view.addLayer(new RenderingLayer(bitmap3, 0));
         view.addLayer(buttonLayer);
+        //Android
         setContentView(view);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Random random = new Random();
-                while(true){
-                    int color = 0xff000000 + 256 * 256 * random.nextInt(256) + 256 * random.nextInt(256)
-                        + random.nextInt(256);
-                    try {
-                        Thread.sleep(1000);
-                        BitmapUtils.setColorToAll(bitmap4, color);
-                    } catch (InterruptedException e) {}
-                    getView().postInvalidate();
-                }
-
-            }
-        }).start();
     }
 
 
