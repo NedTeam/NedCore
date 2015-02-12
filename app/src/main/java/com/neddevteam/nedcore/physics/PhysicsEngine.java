@@ -1,6 +1,6 @@
 package com.neddevteam.nedcore.physics;
 
-import com.neddevteam.costumefrenzy.utils.Vector2f;
+import com.neddevteam.nedcore.utils.Vector2f;
 
 /**
  * Created by mcat on 11/02/15.

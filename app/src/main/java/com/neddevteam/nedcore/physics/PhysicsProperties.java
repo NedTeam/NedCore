@@ -1,7 +1,6 @@
-package com.neddevteam.costumefrenzy.physics;
+package com.neddevteam.nedcore.physics;
 
-import com.neddevteam.costumefrenzy.utils.Point;
-import com.neddevteam.costumefrenzy.utils.Vector2f;
+import com.neddevteam.nedcore.utils.Vector2f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +11,40 @@ import java.util.List;
 public class PhysicsProperties {
 
     private List<Vector2f> forces = new ArrayList<Vector2f>();
-    private Point location;
-    private Vector2f speed;
+    private Vector2f location;
+    private Vector2f velocity;
+    private int mass;
 
-    public PhysicsProperties(Point location){
+    public PhysicsProperties(Vector2f location, int mass){
         this.location = location;
+        this.mass = mass;
+    }
+
+    public List<Vector2f> getForces() {
+        return forces;
+    }
+
+    public Vector2f getLocation() {
+        return location;
+    }
+
+    public void setLocation(Vector2f location) {
+        this.location = location;
+    }
+
+    public Vector2f getVelocity() {
+        return velocity;
+    }
+
+    public void setVelocity(Vector2f speed) {
+        this.velocity = speed;
+    }
+
+    public void addForce(Vector2f force) {
+        forces.add(force);
+    }
+
+    public float getMass() {
+        return mass;
     }
 }
