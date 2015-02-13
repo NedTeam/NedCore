@@ -1,6 +1,5 @@
 package com.neddevteam.costumefrenzy.utils;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -9,25 +8,41 @@ import java.util.List;
  */
 public class CollectionUtils {
     public static <T> List<T> sortedInsertion(List<T> list, Comparator<T> comparator,T elem){
-        list.add(elem);
-        Collections.sort(list,comparator); //TODO
+        if(list.size()<=0)
+            list.add(elem);
+        else{
+            addLayerRecursive(list,comparator,elem,list.size()/2);
+        }
         return list;
     }
 
+    private static <T> void addLayerRecursive(List<T> list,Comparator<T> comparator,T elem,
+                                              int currentPos){
+        T elem2 = list.get(currentPos);
+        int comparison = comparator.compare(elem,elem2);
 
-    /*private void addLayerRecursive(Layer l, int currentPos){
-        Layer l2 = layers.get(currentPos);
-        int comparison = comparator.compare(l,l2);
-
-        if(comparison == 0)
-            layers.add(currentPos, l);
+        if(comparison == 0) {
+            list.add(currentPos, elem);
+        }
         else if(comparison < 0) {
-            int newPos = currentPos/2;
-            addLayerRecursive(l, newPos);
+            if (currentPos == 0){
+                list.add(0,elem);
+            }
+            if(comparator.compare(elem,list.get(currentPos-1)) > 0){
+                list.add(currentPos,elem);
+            }
+            int newPos = currentPos / 2;
+            addLayerRecursive(list, comparator, elem, newPos);
         }
         else {
-            int newPos = currentPos*3/2;
-            addLayerRecursive(l, newPos);
+            if (currentPos >= list.size()-1){
+                list.add(elem);
+            }
+            if(comparator.compare(elem,list.get(currentPos+1)) < 0){
+                list.add(currentPos+1,elem);
+            }
+            int newPos = currentPos + 3 / 2;
+            addLayerRecursive(list,comparator,elem,newPos);
         }
-    }*/
+    }
 }

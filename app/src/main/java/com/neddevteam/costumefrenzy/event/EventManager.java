@@ -40,6 +40,11 @@ public class EventManager {
         }
     }
 
+    /**
+     * Calls an event {@code event}
+     *
+     * @param event event to be called
+     */
     public static void callEvent(final Event event){
         new Thread(){
             @Override
