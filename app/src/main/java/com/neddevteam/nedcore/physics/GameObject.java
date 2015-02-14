@@ -2,6 +2,8 @@ package com.neddevteam.nedcore.physics;
 
 import android.graphics.Bitmap;
 
+import com.neddevteam.nedcore.utils.BoundingBox;
+import com.neddevteam.nedcore.utils.Point;
 import com.neddevteam.nedcore.utils.Vector2f;
 
 /**
@@ -27,5 +29,10 @@ public class GameObject {
     public void applyForce(Vector2f force){
         properties.addForce(force);
     }
+
+    public BoundingBox getBoundingBox() {
+        return new BoundingBox(new Point(properties.getLocation()),texture.getWidth(),texture.getHeight());
+    }
+
 }
 

@@ -1,5 +1,7 @@
 package com.neddevteam.nedcore.physics;
 
+import android.util.Log;
+
 import com.neddevteam.nedcore.layer.RenderingLayer;
 import com.neddevteam.nedcore.render.RenderingView;
 import com.neddevteam.nedcore.utils.Point;
@@ -20,15 +22,21 @@ public class World {
     private Thread physicsThread;
     private RenderingLayer container;
     private HashMap<GameObject,Vector2f> positions = new HashMap<>();
+    private int xDivisions;
+    private int yDivisions;
 
-    public World(Vector2f gravity, final RenderingLayer container, final RenderingView view){
+    public World(Vector2f gravity, final RenderingLayer container, final RenderingView view,
+                 int wScreen,int hScreen){
         this.container = container;
-        lastUpdate = System.currentTimeMillis();
         final World w = this;
         this.gravity = gravity;
+        xDivisions = (wScreen/50)+1;
+        yDivisions = (hScreen/50)+1;
+        Log.i("NedCore",wScreen+"<->"+hScreen+"="+xDivisions+"&"+yDivisions);
         physicsThread = new Thread(new Runnable(){
             @Override
             public void run() {
+                lastUpdate = System.currentTimeMillis();
                 while(!Thread.interrupted()){
                     PhysicsEngine.calculatePhysics(w);
                     for(GameObject object:objects){
@@ -60,4 +68,8 @@ public class World {
         objects.add(object);
         positions.put(object,object.getProperties().getLocation());
     }
+
+    public int getxDivisions(){return xDivisions;}
+
+    public int getyDivisions(){return yDivisions;}
 }

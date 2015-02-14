@@ -47,11 +47,23 @@ public class testActivity extends GameActivity {
         RenderingView view = getView();
         view.addLayer(new RenderingLayer(bitmap2,-1));
         //Physics test
-        RenderingLayer layer = new RenderingLayer(bitmap4,new Point(50,50),10,true);
-        World w = new World(new Vector2f(0,-9.8f),layer, view);
-        GameObject obj = new GameObject(bitmap4,new PhysicsProperties(new Vector2f(50,50),100));
+        RenderingLayer layer = new RenderingLayer(bitmap4,new Point(50,500),10,true);
+        int screenHeight = getResources().getDisplayMetrics().heightPixels;
+        int screenWidth = getResources().getDisplayMetrics().widthPixels;
+        World w = new World(new Vector2f(0,-9.8f),layer, view,screenWidth,screenHeight);
+        final GameObject obj = new GameObject(bitmap4,new PhysicsProperties(new Vector2f(50,500),100));
         w.addObject(obj);
-        obj.applyForce(new Vector2f(0.001f,0));
+        obj.applyForce(new Vector2f(0,0.0098f));
+        obj.applyForce(new Vector2f(0.03f,-0.05f));
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(700);
+                    obj.applyForce(new Vector2f(-0.03f,0.05f));
+                } catch (InterruptedException e) {}
+            }
+        }).start();
         //Add layers to view
         view.addLayer(layer);
         view.addLayer(new RenderingLayer(bitmap3, 0));
