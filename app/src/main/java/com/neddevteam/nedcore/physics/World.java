@@ -22,6 +22,17 @@ public class World {
     private Thread physicsThread;
     private RenderingLayer container;
     private HashMap<GameObject,Vector2f> positions = new HashMap<>();
+    private int wScreen;
+
+    public int getScreenHeight() {
+        return hScreen;
+    }
+
+    public int getScreenWidth() {
+        return wScreen;
+    }
+
+    private int hScreen;
     private int xDivisions;
     private int yDivisions;
 
@@ -30,6 +41,8 @@ public class World {
         this.container = container;
         final World w = this;
         this.gravity = gravity;
+        this.wScreen = wScreen;
+        this.hScreen = hScreen;
         xDivisions = (wScreen/50)+1;
         yDivisions = (hScreen/50)+1;
         Log.i("NedCore",wScreen+"<->"+hScreen+"="+xDivisions+"&"+yDivisions);

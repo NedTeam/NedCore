@@ -32,6 +32,11 @@ public class RenderingLayer implements Layer {
         this.priority = priority;
         this.staticLayer = staticLayer;
     }
+    public RenderingLayer(int priority, boolean staticLayer){
+        bitmaps = new HashMap<>();
+        this.priority = priority;
+        this.staticLayer = staticLayer;
+    }
 
     public void addBitmap(Bitmap bitmap, Point position){
         bitmaps.put(position, bitmap);

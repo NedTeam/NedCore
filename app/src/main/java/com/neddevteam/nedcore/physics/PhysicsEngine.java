@@ -50,6 +50,17 @@ public class PhysicsEngine {
                     for(int j=i+1;j<objects.size();j++){
                         checkCollision(objects.get(i),objects.get(j));
                     }
+
+                    //Check collisions with screen edges
+                    if(objects.get(i).getBoundingBox().getP1().getX() <= 0){
+                        //TODO left edge collision
+                    } else if(objects.get(i).getBoundingBox().getP1().getY() <= 0){
+                        //TODO top edge collision
+                    } else if(objects.get(i).getBoundingBox().getP2().getX() >= w.getScreenWidth()){
+                        //TODO right edge collision
+                    } else if(objects.get(i).getBoundingBox().getP2().getY() >= w.getScreenHeight()){
+                        //TODO bottom edge collision
+                    }
                 }
             }
         }
