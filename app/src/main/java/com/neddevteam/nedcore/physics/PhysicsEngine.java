@@ -66,6 +66,9 @@ public class PhysicsEngine {
         }
     }
 
+
+    //Checks if two objects have collided by checking the middle pixel
+    //of the intersection of their bounding boxes
     private static void checkCollision(GameObject g1,GameObject g2) {
         BoundingBox intersect = g1.getBoundingBox().intersect(g2.getBoundingBox());
         Point mid = new Point((intersect.getP1().getX()+intersect.getP2().getX())/2,
@@ -81,6 +84,7 @@ public class PhysicsEngine {
         }
     }
 
+    //Checks which object is in which subdivision of the World
     private static HashMap<Point,List<GameObject>> getRegionsMap(World w){
         HashMap<Point,List<GameObject>> points = new HashMap<>();
         for(GameObject go:w.getObjects()){
