@@ -10,6 +10,7 @@ import com.neddevteam.nedcore.event.EventManager;
 import com.neddevteam.nedcore.event.predefined.ButtonClickedEvent;
 import com.neddevteam.nedcore.event.predefined.ButtonPressedEvent;
 import com.neddevteam.nedcore.event.predefined.ButtonReleasedEvent;
+import com.neddevteam.nedcore.physics.CollisionHandler;
 import com.neddevteam.nedcore.render.RenderingView;
 
 /**
@@ -25,6 +26,7 @@ public class GameActivity extends Activity {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         statusBarHeight = getStatusBarHeight();
+        EventManager.register(CollisionHandler.class);
         view = new RenderingView(getBaseContext());
         //Register events
     }

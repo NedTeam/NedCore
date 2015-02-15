@@ -1,5 +1,7 @@
 package com.neddevteam.nedcore.physics;
 
+import com.neddevteam.nedcore.event.EventManager;
+import com.neddevteam.nedcore.event.predefined.CollisionEvent;
 import com.neddevteam.nedcore.math.Graph;
 import com.neddevteam.nedcore.utils.BitmapUtils;
 import com.neddevteam.nedcore.utils.BoundingBox;
@@ -87,7 +89,7 @@ public class PhysicsEngine {
                     for(int j=i+1;j<objects.size();j++){
                         //Only check once for every pair of objects
                         if(!collisionGraph.edgeExsists(objects.get(i),objects.get(j))) {
-                            checkCollision(objects.get(i), objects.get(j));
+                            checkCollision(w,objects.get(i), objects.get(j));
                             collisionGraph.addEdge(objects.get(i),objects.get(j));
                         }
                     }
@@ -99,7 +101,7 @@ public class PhysicsEngine {
 
     //Checks if two objects have collided by checking the middle pixel
     //of the intersection of their bounding boxes
-    private static void checkCollision(GameObject g1,GameObject g2) {
+    private static void checkCollision(World w,GameObject g1,GameObject g2) {
         BoundingBox intersect = g1.getBoundingBox().intersect(g2.getBoundingBox());
         if(intersect==null)return;
         //Log.i("NedCore",g1.getBoundingBox()+" U "+g2.getBoundingBox()+" = "+intersect.toString());
@@ -110,22 +112,12 @@ public class PhysicsEngine {
         Point rel2 = new Point((int)(mid.getX()-g2.getProperties().getLocation().getX()),
                 (int)(mid.getY()-g2.getProperties().getLocation().getY()));
         boolean isG1 = BitmapUtils.checkAlpha(g1.getTexture().getBitmap(),rel1.getX(),rel1.getY());
-        boolean isG2 = BitmapUtils.checkAlpha(g2.getTexture().getBitmap(),rel2.getX(),rel2.getY());
-        if(isG1 && isG2){
-            if(!g1.getTexture().isColTest()){
-              BitmapUtils.setColorToAll(g1.getTexture().getBitmap(),0xff00ff00);
-              g1.getTexture().setColTest(true);
-            }
-            //Temporary :P
-            //BitmapUtils.setColorToAll(g1.getTexture().getBitmap(),0xff00ff00);
-            //Log.i("NedCore","COLLISION!!!!!!");
-            //TODO EVENT
-        }else{
-            if(g1.getTexture().isColTest()){
-                BitmapUtils.setColorToAll(g1.getTexture().getBitmap(),0xffff0000);
-                g1.getTexture().setColTest(false);
-            }
-            //BitmapUtils.setColorToAll(g1.getTexture().getBitmap(),0xff0000ff);
+       boolean isG2 = BitmapUtils.checkAlpha(g2.getTexture().getBitmap(),rel2.getX(),rel2.getY());
+        if(isG1 && isG2 && !w.getColliding().edgeExsists(g1,g2)){
+            EventManager.callEvent(new CollisionEvent(g1,g2));
+            w.getColliding().addEdge(g1,g2);
+        }else if(!(isG1 && isG2) && w.getColliding().edgeExsists(g1,g2)){
+            w.getColliding().removeEdge(g1,g2);
         }
     }
 

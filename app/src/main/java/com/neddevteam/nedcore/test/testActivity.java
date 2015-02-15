@@ -61,6 +61,7 @@ public class testActivity extends GameActivity {
         final GameObject obj2 = new GameObject(mine,new PhysicsProperties(new Vector2f(500,50),50));
         w.addObject(obj2);
         obj.applyForce(new Vector2f(0,0.0198f));
+        obj2.applyForce(new Vector2f(0,0.0198f));
         obj.applyForce(new Vector2f(0.03f,-0.05f));
         new Thread(new Runnable() {
             @Override

@@ -44,4 +44,12 @@ public class Vector2f {
     public Vector2f add(Vector2f add) {
         return new Vector2f(x+add.getX(),y+add.getY());
     }
+
+    public Vector2f sub(Vector2f sub) {
+        return new Vector2f(x-sub.getX(),+y-sub.getY());
+    }
+
+    public Vector2f normalized() {
+        return divide((float)getMod());
+    }
 }

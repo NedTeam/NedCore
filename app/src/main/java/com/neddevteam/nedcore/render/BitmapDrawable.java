@@ -16,7 +16,7 @@ public class BitmapDrawable implements IDrawable{
     private Point location;
     private Bitmap bitmap;
     private UUID uuid;
-    private boolean colTest;
+    private boolean visible = true;
 
     public BitmapDrawable(Point loc, Bitmap bitmap) {
         this.location = loc;
@@ -26,7 +26,7 @@ public class BitmapDrawable implements IDrawable{
 
     @Override
     public void draw(Canvas c) {
-        c.drawBitmap(bitmap,location.getX(),location.getY(),new Paint());
+        if(visible) c.drawBitmap(bitmap,location.getX(),location.getY(),new Paint());
     }
 
     @Override
@@ -57,11 +57,11 @@ public class BitmapDrawable implements IDrawable{
         return bitmap;
     }
 
-    public boolean isColTest() {
-        return colTest;
+    public boolean isVisible() {
+        return visible;
     }
 
-    public void setColTest(boolean colTest) {
-        this.colTest = colTest;
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 }

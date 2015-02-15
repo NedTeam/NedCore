@@ -3,6 +3,7 @@ package com.neddevteam.nedcore.physics;
 import android.util.Log;
 
 import com.neddevteam.nedcore.layer.RenderingLayer;
+import com.neddevteam.nedcore.math.Graph;
 import com.neddevteam.nedcore.render.RenderingView;
 import com.neddevteam.nedcore.utils.Point;
 import com.neddevteam.nedcore.utils.Vector2f;
@@ -35,9 +36,11 @@ public class World {
     private int hScreen;
     private int xDivisions;
     private int yDivisions;
+    private Graph<GameObject> colliding;
 
     public World(Vector2f gravity, final RenderingLayer container, final RenderingView view,
                  int wScreen,int hScreen){
+        colliding = new Graph<>();
         this.container = container;
         final World w = this;
         this.gravity = gravity;
@@ -81,9 +84,14 @@ public class World {
     public void addObject(GameObject object){
         objects.add(object);
         positions.put(object,object.getProperties().getLocation());
+        //colliding.addVertex(object);
     }
 
     public int getxDivisions(){return xDivisions;}
 
     public int getyDivisions(){return yDivisions;}
+
+    public Graph<GameObject> getColliding() {
+        return colliding;
+    }
 }
