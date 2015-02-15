@@ -3,6 +3,7 @@ package com.neddevteam.nedcore.math;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by gdefermin on 2/15/15.
@@ -40,7 +41,8 @@ public class Graph<T> {
     /**
      * Adds a vertex to the graph with no relations.<br>
      * If relations want to be added immediately, skip this and use {@link #addEdge(Object, Object)}
-     * directly.
+     * directly.<br>
+     * If the vertex exists, nothing happens.
      * @param vertex The vertex to be added
      */
     public void addVertex(T vertex){
@@ -107,6 +109,35 @@ public class Graph<T> {
             edges.remove(vertex1);
             graph.put(vertex2, edges);
         }
+    }
+
+    /**
+     * Returns a set with all the vertices in the graph.
+     * @return vertices
+     */
+    public Set<T> getVertices(){
+        return graph.keySet();
+    }
+
+    /**
+     * Returns a list with all the vertices that {@code vertex} is connected with.
+     * @param vertex
+     * @return vertices
+     */
+    public List<T> getRelations(T vertex){
+        return graph.get(vertex);
+    }
+
+    /**
+     * True if both vertices exist an there is an edge connecting them, false otherwise.
+     * @param vertex1
+     * @param vertex2
+     * @return
+     */
+    public boolean edgeExsists(T vertex1, T vertex2){
+        if(!graph.containsKey(vertex1) || !graph.containsKey(vertex2))
+            return false;
+        return graph.get(vertex1).contains(vertex2);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.neddevteam.nedcore.physics;
 
+import com.neddevteam.nedcore.math.Graph;
 import com.neddevteam.nedcore.utils.BitmapUtils;
 import com.neddevteam.nedcore.utils.BoundingBox;
 import com.neddevteam.nedcore.utils.Point;
