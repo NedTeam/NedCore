@@ -5,8 +5,6 @@ import android.graphics.Bitmap;
 import com.neddevteam.nedcore.utils.Point;
 
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 
 /**
  * Created by gdefermin on 10/23/14.
@@ -47,9 +45,8 @@ public class RenderingLayer implements Layer {
     }
 
     public void moveBitmap(Point origin, Point destination){
-        Map.Entry<Point,Bitmap> map = getBitmap(origin);
-        addBitmap(map.getValue(), destination);
-        removeBitmap(map.getKey());
+        addBitmap(bitmaps.get(origin), destination);
+        removeBitmap(origin);
     }
 
     @Override
@@ -68,13 +65,4 @@ public class RenderingLayer implements Layer {
 
     public boolean isStaticLayer() { return staticLayer; }
 
-    private Entry<Point,Bitmap> getBitmap(Point p){
-        Entry<Point,Bitmap> entry = null;
-        for(Entry<Point, Bitmap> e:bitmaps.entrySet()){
-            if(e.getKey().equals(p)){
-                entry = e;
-            }
-        }
-        return entry;
-    }
 }

@@ -48,12 +48,15 @@ public class testActivity extends GameActivity {
         view.addLayer(new RenderingLayer(bitmap2,-1));
         //Physics test
         RenderingLayer layer = new RenderingLayer(bitmap4,new Point(50,500),10,true);
+        layer.addBitmap(bitmap3,new Point(500,50));
         int screenHeight = getResources().getDisplayMetrics().heightPixels;
         int screenWidth = getResources().getDisplayMetrics().widthPixels;
         World w = new World(new Vector2f(0,-9.8f),layer, view,screenWidth,screenHeight);
         final GameObject obj = new GameObject(bitmap4,new PhysicsProperties(new Vector2f(50,500),100));
         w.addObject(obj);
-        obj.applyForce(new Vector2f(0,0.0098f));
+        final GameObject obj2 = new GameObject(bitmap3,new PhysicsProperties(new Vector2f(500,50),50));
+        w.addObject(obj2);
+        obj.applyForce(new Vector2f(0,0.0198f));
         obj.applyForce(new Vector2f(0.03f,-0.05f));
         new Thread(new Runnable() {
             @Override

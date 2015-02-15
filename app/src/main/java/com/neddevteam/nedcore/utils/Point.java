@@ -33,7 +33,24 @@ public class Point {
         this.y = y;
     }
 
-    public boolean equals(Point p2){
-        return x==p2.getX() && y==p2.getY();
+    @Override
+    public boolean equals(Object p2){
+        if(p2 instanceof Point) {
+            return x == ((Point)p2).getX() && y == ((Point)p2).getY();
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return getX()+","+getY();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 31 * hash + x;
+        hash = 31 * hash + y;
+        return hash;
     }
 }
