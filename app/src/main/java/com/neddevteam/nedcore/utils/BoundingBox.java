@@ -37,8 +37,13 @@ public class BoundingBox {
         if(!r1.intersect(r2))return null;
         Point pn1 = new Point(Math.max(p1.getX(),other.getP1().getX()),
                 Math.max(p1.getY(),other.getP1().getY()));
-        Point pn2 = new Point(Math.max(p2.getX(),other.getP2().getX()),
-                Math.max(p2.getY(),other.getP2().getY()));
+        Point pn2 = new Point(Math.min(p2.getX(),other.getP2().getX()),
+                Math.min(p2.getY(),other.getP2().getY()));
         return new BoundingBox(pn1,pn2);
+    }
+
+    @Override
+    public String toString() {
+        return p1.toString()+"-"+p2.toString();
     }
 }

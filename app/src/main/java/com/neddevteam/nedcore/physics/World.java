@@ -55,13 +55,14 @@ public class World {
                     for(GameObject object:objects){
                         Vector2f pos0 = positions.get(object);
                         Vector2f pos = object.getProperties().getLocation();
-                        container.moveBitmap(new Point(pos0),new Point(pos));
+                        container.moveBitmap(object.getTexture(),new Point(pos));
                         positions.put(object,pos);
                     }
                     lastUpdate = System.currentTimeMillis();
                     view.postInvalidate();
                     try {
                         Thread.sleep(32);
+                        //Thread.sleep(500);
                     } catch (InterruptedException e) {}
                 }
             }

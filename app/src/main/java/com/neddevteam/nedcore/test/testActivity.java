@@ -13,6 +13,7 @@ import com.neddevteam.nedcore.layer.RenderingLayer;
 import com.neddevteam.nedcore.physics.GameObject;
 import com.neddevteam.nedcore.physics.PhysicsProperties;
 import com.neddevteam.nedcore.physics.World;
+import com.neddevteam.nedcore.render.BitmapDrawable;
 import com.neddevteam.nedcore.render.RenderingView;
 import com.neddevteam.nedcore.utils.Point;
 import com.neddevteam.nedcore.utils.Vector2f;
@@ -45,16 +46,19 @@ public class testActivity extends GameActivity {
         buttonLayer.addButton(testButton);
         //Add layers
         RenderingView view = getView();
-        view.addLayer(new RenderingLayer(bitmap2,-1));
+        view.addLayer(new RenderingLayer(-1).addBitmap(bitmap2));
         //Physics test
-        RenderingLayer layer = new RenderingLayer(bitmap4,new Point(50,500),10,true);
-        layer.addBitmap(bitmap3,new Point(500,50));
+        BitmapDrawable circle = new BitmapDrawable(new Point(50,500),bitmap4);
+        BitmapDrawable mine = new BitmapDrawable(new Point(500,50),bitmap3);
+        RenderingLayer layer = new RenderingLayer(10,true);
+        layer.addBitmap(circle);
+        layer.addBitmap(mine);
         int screenHeight = getResources().getDisplayMetrics().heightPixels;
         int screenWidth = getResources().getDisplayMetrics().widthPixels;
         World w = new World(new Vector2f(0,-9.8f),layer, view,screenWidth,screenHeight);
-        final GameObject obj = new GameObject(bitmap4,new PhysicsProperties(new Vector2f(50,500),100));
+        final GameObject obj = new GameObject(circle,new PhysicsProperties(new Vector2f(50,500),100));
         w.addObject(obj);
-        final GameObject obj2 = new GameObject(bitmap3,new PhysicsProperties(new Vector2f(500,50),50));
+        final GameObject obj2 = new GameObject(mine,new PhysicsProperties(new Vector2f(500,50),50));
         w.addObject(obj2);
         obj.applyForce(new Vector2f(0,0.0198f));
         obj.applyForce(new Vector2f(0.03f,-0.05f));
@@ -69,7 +73,7 @@ public class testActivity extends GameActivity {
         }).start();
         //Add layers to view
         view.addLayer(layer);
-        view.addLayer(new RenderingLayer(bitmap3, 0));
+        view.addLayer(new RenderingLayer(0).addBitmap(bitmap3));
         view.addLayer(buttonLayer);
         //Android
         setContentView(view);

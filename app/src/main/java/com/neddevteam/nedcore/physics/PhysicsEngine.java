@@ -1,7 +1,5 @@
 package com.neddevteam.nedcore.physics;
 
-import android.util.Log;
-
 import com.neddevteam.nedcore.utils.BitmapUtils;
 import com.neddevteam.nedcore.utils.BoundingBox;
 import com.neddevteam.nedcore.utils.Point;
@@ -21,8 +19,8 @@ public class PhysicsEngine {
         UUID uid = UUID.randomUUID();
         long t0 = w.getLastUpdated();
         long t = System.currentTimeMillis();
-        //long deltaT = Math.abs(t-t0);
-        long deltaT = 50;
+        long deltaT = Math.abs(t-t0);
+        //long deltaT = 50;
         for(GameObject go:w.getObjects()){
             PhysicsProperties props = go.getProperties();
             //Calculate velocity based on forces
@@ -39,8 +37,7 @@ public class PhysicsEngine {
             //VELOCITY IS IN PIXELS/MS!!!!!!!!!!!!!!!
             Vector2f vel = props.getVelocity();
             props.setLocation(props.getLocation().add(vel.multiply(deltaT)));
-            //TODO Check colisions between objects WIP
-            //checkAllCollisions(w);
+            checkAllCollisions(w);
         }
     }
 
@@ -82,8 +79,10 @@ public class PhysicsEngine {
         for(Point p:gridData.keySet()){
             List<GameObject> objects = gridData.get(p);
             if(objects.size()!=1){
+                //Log.i("NedCore","Possible collision!");
                 for(int i=0;i<objects.size()-1;i++){
                     for(int j=i+1;j<objects.size();j++){
+                        //TODO Only check once for every pair of objects (Graph)
                         checkCollision(objects.get(i),objects.get(j));
                     }
                 }
@@ -96,16 +95,31 @@ public class PhysicsEngine {
     //of the intersection of their bounding boxes
     private static void checkCollision(GameObject g1,GameObject g2) {
         BoundingBox intersect = g1.getBoundingBox().intersect(g2.getBoundingBox());
+        if(intersect==null)return;
+        //Log.i("NedCore",g1.getBoundingBox()+" U "+g2.getBoundingBox()+" = "+intersect.toString());
         Point mid = new Point((intersect.getP1().getX()+intersect.getP2().getX())/2,
                 (intersect.getP1().getY()+intersect.getP2().getY())/2);
         Point rel1 = new Point((int)(mid.getX()-g1.getProperties().getLocation().getX()),
                 (int)(mid.getY()-g1.getProperties().getLocation().getY()));
         Point rel2 = new Point((int)(mid.getX()-g2.getProperties().getLocation().getX()),
                 (int)(mid.getY()-g2.getProperties().getLocation().getY()));
-        boolean isG1 = BitmapUtils.checkAlpha(g1.getTexture(),rel1.getX(),rel1.getY());
-        boolean isG2 = BitmapUtils.checkAlpha(g2.getTexture(),rel2.getX(),rel2.getY());
+        boolean isG1 = BitmapUtils.checkAlpha(g1.getTexture().getBitmap(),rel1.getX(),rel1.getY());
+        boolean isG2 = BitmapUtils.checkAlpha(g2.getTexture().getBitmap(),rel2.getX(),rel2.getY());
         if(isG1 && isG2){
+            if(!g1.getTexture().isColTest()){
+              BitmapUtils.setColorToAll(g1.getTexture().getBitmap(),0xff00ff00);
+              g1.getTexture().setColTest(true);
+            }
+            //Temporary :P
+            //BitmapUtils.setColorToAll(g1.getTexture().getBitmap(),0xff00ff00);
+            //Log.i("NedCore","COLLISION!!!!!!");
             //TODO EVENT
+        }else{
+            if(g1.getTexture().isColTest()){
+                BitmapUtils.setColorToAll(g1.getTexture().getBitmap(),0xffff0000);
+                g1.getTexture().setColTest(false);
+            }
+            //BitmapUtils.setColorToAll(g1.getTexture().getBitmap(),0xff0000ff);
         }
     }
 
@@ -119,13 +133,10 @@ public class PhysicsEngine {
             Point p2 = go.getBoundingBox().getP2();
             int p2x = p2.getX()/50;
             int p2y = p2.getY()/50;
-            Log.i("NedCore",p1x+","+p1y+"-"+p2x+","+p2y);
+            //Log.i("NedCore",p1x+","+p1y+"-"+p2x+","+p2y);
             for(int i=p1x;i<=p2x;i++) {
                 for (int j = p1y; j <= p2y; j++) {
                     Point p = new Point(i, j);
-                    if(i==10&&j==7){
-                        Log.i("NedCore","Break!");
-                    }
                     if (points.containsKey(p)) {
                         points.get(p).add(go);
                     } else {
