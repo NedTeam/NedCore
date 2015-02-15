@@ -45,8 +45,8 @@ public class EventManager {
      *
      * @param event event to be called
      */
-    public static void callEvent(final Event event){
-        new Thread(){
+    public static Thread callEvent(final Event event){
+        Thread t = new Thread(){
             @Override
             public void run(){
                 List<MethodWrapper> methods = new ArrayList<MethodWrapper>();
@@ -74,6 +74,8 @@ public class EventManager {
 
                 }
             }
-        }.start();
+        };
+        t.start();
+        return t;
     }
 }
