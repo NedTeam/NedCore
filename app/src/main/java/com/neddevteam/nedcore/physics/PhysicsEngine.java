@@ -74,6 +74,8 @@ public class PhysicsEngine {
                 //TODO bottom edge collision
             }
         }
+        Graph<GameObject> collisionGraph = new Graph<>();
+
         //1º Calculate grid size based on screen properties
         HashMap<Point,List<GameObject>> gridData = getRegionsMap(w);
         //Get objects in same region
@@ -83,8 +85,11 @@ public class PhysicsEngine {
                 //Log.i("NedCore","Possible collision!");
                 for(int i=0;i<objects.size()-1;i++){
                     for(int j=i+1;j<objects.size();j++){
-                        //TODO Only check once for every pair of objects (Graph)
-                        checkCollision(objects.get(i),objects.get(j));
+                        //Only check once for every pair of objects
+                        if(!collisionGraph.edgeExsists(objects.get(i),objects.get(j))) {
+                            checkCollision(objects.get(i), objects.get(j));
+                            collisionGraph.addEdge(objects.get(i),objects.get(j));
+                        }
                     }
                 }
             }

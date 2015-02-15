@@ -33,7 +33,7 @@ public class RenderingView extends View{
     }
 
     public void addLayer(Layer l){
-        CollectionUtils.sortedInsertion(layers, new LayerComparator(), l);
+        CollectionUtils.sortedInsertion(layers, comparator, l);
     }
 
     public List<Layer> getLayers(){
