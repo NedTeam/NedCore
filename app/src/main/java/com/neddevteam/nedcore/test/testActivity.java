@@ -53,7 +53,7 @@ public class testActivity extends GameActivity {
         RenderingLayer layer = new RenderingLayer(10,true);
         layer.addBitmap(circle);
         layer.addBitmap(mine);
-        int screenHeight = getResources().getDisplayMetrics().heightPixels;
+        int screenHeight = getResources().getDisplayMetrics().heightPixels - getStatusBarHeight();
         int screenWidth = getResources().getDisplayMetrics().widthPixels;
         World w = new World(new Vector2f(0,-9.8f),layer, view,screenWidth,screenHeight);
         final GameObject obj = new GameObject(circle,new PhysicsProperties(new Vector2f(50,500),100));

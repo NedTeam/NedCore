@@ -25,13 +25,13 @@ public class GameActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        statusBarHeight = getStatusBarHeight();
+        statusBarHeight = calculateStatusBarHeight();
         EventManager.register(CollisionHandler.class);
         view = new RenderingView(getBaseContext());
         //Register events
     }
 
-    private int getStatusBarHeight() {
+    private int calculateStatusBarHeight() {
         int result = 0;
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
         if (resourceId > 0) {
@@ -85,5 +85,9 @@ public class GameActivity extends Activity {
      */
     public RenderingView getView(){
          return view;
+    }
+
+    public int getStatusBarHeight(){
+        return statusBarHeight;
     }
 }
