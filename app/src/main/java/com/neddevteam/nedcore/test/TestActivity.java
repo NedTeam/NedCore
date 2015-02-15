@@ -23,9 +23,9 @@ import costumefrenzy.nedteam.com.costumefrenzy.R;
 /**
  * Created by mcat on 7/02/15.
  */
-public class testActivity extends GameActivity {
+public class TestActivity extends GameActivity {
 
-    public testActivity(){
+    public TestActivity(){
 
     }
 
@@ -49,17 +49,21 @@ public class testActivity extends GameActivity {
         view.addLayer(new RenderingLayer(-1).addBitmap(bitmap2));
         //Physics test
         BitmapDrawable circle = new BitmapDrawable(new Point(50,500),bitmap4);
+        BitmapDrawable circle2 = new BitmapDrawable(new Point(50,1000),bitmap4);
         BitmapDrawable mine = new BitmapDrawable(new Point(500,50),bitmap3);
         RenderingLayer layer = new RenderingLayer(10,true);
         layer.addBitmap(circle);
+        layer.addBitmap(circle2);
         layer.addBitmap(mine);
         int screenHeight = getResources().getDisplayMetrics().heightPixels - getStatusBarHeight();
         int screenWidth = getResources().getDisplayMetrics().widthPixels;
         World w = new World(new Vector2f(0,0.00098f),layer, view,screenWidth,screenHeight);
         final GameObject obj = new GameObject(circle,new PhysicsProperties(new Vector2f(50,500),100));
         w.addObject(obj);
-        final GameObject obj2 = new GameObject(mine,new PhysicsProperties(new Vector2f(500,50),50));
+        final GameObject obj2 = new GameObject(mine,new PhysicsProperties(new Vector2f(500,50),500));
         w.addObject(obj2);
+        final GameObject obj3 = new GameObject(circle2,new PhysicsProperties(new Vector2f(50,1000),100));
+        w.addObject(obj3);
 //        obj.applyForce(new Vector2f(0,0.0198f));
 //        obj2.applyForce(new Vector2f(0,0.0198f));
         obj.applyForce(new Vector2f(0.03f,-0.05f));
