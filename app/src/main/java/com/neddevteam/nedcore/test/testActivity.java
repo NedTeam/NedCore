@@ -55,13 +55,13 @@ public class testActivity extends GameActivity {
         layer.addBitmap(mine);
         int screenHeight = getResources().getDisplayMetrics().heightPixels - getStatusBarHeight();
         int screenWidth = getResources().getDisplayMetrics().widthPixels;
-        World w = new World(new Vector2f(0,-9.8f),layer, view,screenWidth,screenHeight);
+        World w = new World(new Vector2f(0,0.00098f),layer, view,screenWidth,screenHeight);
         final GameObject obj = new GameObject(circle,new PhysicsProperties(new Vector2f(50,500),100));
         w.addObject(obj);
         final GameObject obj2 = new GameObject(mine,new PhysicsProperties(new Vector2f(500,50),50));
         w.addObject(obj2);
-        obj.applyForce(new Vector2f(0,0.0198f));
-        obj2.applyForce(new Vector2f(0,0.0198f));
+//        obj.applyForce(new Vector2f(0,0.0198f));
+//        obj2.applyForce(new Vector2f(0,0.0198f));
         obj.applyForce(new Vector2f(0.03f,-0.05f));
         new Thread(new Runnable() {
             @Override

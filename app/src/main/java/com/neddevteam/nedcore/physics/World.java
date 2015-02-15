@@ -18,7 +18,7 @@ import java.util.List;
 public class World {
 
     private Long lastUpdate;
-    private Vector2f gravity;
+    private Vector2f gravityAcceleration;
     private List<GameObject> objects = new ArrayList<GameObject>();
     private Thread physicsThread;
     private RenderingLayer container;
@@ -38,12 +38,12 @@ public class World {
     private int yDivisions;
     private Graph<GameObject> colliding;
 
-    public World(Vector2f gravity, final RenderingLayer container, final RenderingView view,
+    public World(Vector2f gravityAcceleration, final RenderingLayer container, final RenderingView view,
                  int wScreen,int hScreen){
         colliding = new Graph<>();
         this.container = container;
         final World w = this;
-        this.gravity = gravity;
+        this.gravityAcceleration = gravityAcceleration;
         this.wScreen = wScreen;
         this.hScreen = hScreen;
         xDivisions = (wScreen/50)+1;
@@ -82,6 +82,8 @@ public class World {
     }
 
     public void addObject(GameObject object){
+        //Add gravity to object
+        object.applyForce(gravityAcceleration.multiply(object.getProperties().getMass()));
         objects.add(object);
         positions.put(object,object.getProperties().getLocation());
         //colliding.addVertex(object);
