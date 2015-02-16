@@ -2,7 +2,6 @@ package com.neddevteam.nedcore.event.predefined;
 
 import com.neddevteam.nedcore.event.Event;
 import com.neddevteam.nedcore.physics.GameObject;
-import com.neddevteam.nedcore.utils.Vector2f;
 
 /**
  * Created by gdefermin on 2/14/15.
@@ -27,7 +26,7 @@ public class CollisionEvent extends Event{
      * @param obj1
      */
     public CollisionEvent(GameObject obj1){
-        this.obj1 = obj1;;
+        this.obj1 = obj1;
     }
 
     /**
