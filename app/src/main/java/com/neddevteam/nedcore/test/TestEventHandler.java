@@ -14,17 +14,17 @@ import com.neddevteam.nedcore.event.predefined.ButtonReleasedEvent;
 public class TestEventHandler implements Listener {
 
     @HandleEvent
-    public void press(ButtonPressedEvent test){
+    public void onPress(ButtonPressedEvent test){
         Log.i("NedCore","Press:"+test.getButton().getUUID().toString());
     }
 
     @HandleEvent
-    public void release(ButtonReleasedEvent test){
+    public void onRelease(ButtonReleasedEvent test){
         Log.i("NedCore", "Release:" + test.getButton().getUUID().toString());
     }
 
     @HandleEvent
-    public void click(ButtonClickedEvent test){
+    public void onClick(ButtonClickedEvent test){
         Log.i("NedCore", "Click:" + test.getButton().getUUID().toString());
     }
 }

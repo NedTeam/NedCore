@@ -14,7 +14,7 @@ import com.neddevteam.nedcore.utils.Vector2f;
 public class CollisionHandler implements Listener {
 
     @HandleEvent(priority=EventPriority.VERY_LOW)
-    public void collide(CollisionEvent event){
+    public void onCollide(CollisionEvent event){
         Log.i("NedCore","COLLISION!");
         GameObject obj1 = event.getObj1();
         GameObject obj2 = event.getObj2();
@@ -26,5 +26,6 @@ public class CollisionHandler implements Listener {
         Vector2f dir1 = dir2.multiply(-1);
         props1.setVelocity(dir1.multiply(v1));
         props2.setVelocity(dir2.multiply(v2));
+
     }
 }
