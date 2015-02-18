@@ -19,7 +19,6 @@ import java.util.UUID;
 public class PhysicsEngine {
 
     public static void calculatePhysics(World w){
-        UUID uid = UUID.randomUUID();
         long t0 = w.getLastUpdated();
         long t = System.currentTimeMillis();
         long deltaT = Math.abs(t-t0);
@@ -39,6 +38,7 @@ public class PhysicsEngine {
             //Calculate movement based on velocity
             //VELOCITY IS IN PIXELS/MS!!!!!!!!!!!!!!!
             Vector2f vel = props.getVelocity();
+            //TODO: Check collisions before moving
             props.setLocation(props.getLocation().add(vel.multiply(deltaT)));
             checkAllCollisions(w);
         }

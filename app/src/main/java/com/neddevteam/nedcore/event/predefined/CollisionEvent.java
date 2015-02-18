@@ -10,7 +10,9 @@ import com.neddevteam.nedcore.utils.Vector2f;
 public class CollisionEvent extends Event{
     private GameObject obj1;
     private GameObject obj2;
+    private ScreenEdge edge;
 
+    enum ScreenEdge {LEFT, DOWN, RIGHT, UP}
 
     /**
      * Called every time two objects collide
@@ -25,10 +27,18 @@ public class CollisionEvent extends Event{
     /**
      * Called every time an object collides with the screen edge
      * @param obj1
+     * @param edge
      */
-    public CollisionEvent(GameObject obj1){
-        this.obj1 = obj1;;
+    public CollisionEvent(GameObject obj1, ScreenEdge edge){
+        this.obj1 = obj1;
+        this.edge = edge;
     }
+
+    /**
+     * If this is null, the collision is with an object
+     * @return
+     */
+    public ScreenEdge getEdge() { return edge; }
 
     /**
      * If this is null, the collision is with the screen edge
