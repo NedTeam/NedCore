@@ -12,7 +12,7 @@ public class CollisionEvent extends Event{
     private GameObject obj2;
     private ScreenEdge edge;
 
-    enum ScreenEdge {LEFT, DOWN, RIGHT, UP}
+    public enum ScreenEdge {LEFT, DOWN, RIGHT, UP}
 
     /**
      * Called every time two objects collide
