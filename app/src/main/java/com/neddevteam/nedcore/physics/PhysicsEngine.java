@@ -11,7 +11,6 @@ import com.neddevteam.nedcore.utils.Vector2f;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by mcat on 11/02/15.
@@ -21,60 +20,57 @@ public class PhysicsEngine {
     public static void calculatePhysics(World w){
         long t0 = w.getLastUpdated();
         long t = System.currentTimeMillis();
-        long deltaT = Math.abs(t-t0);
+        long deltaT = Math.abs(t - t0);
         //long deltaT = 50;
-        for(GameObject go:w.getObjects()){
-            PhysicsProperties props = go.getProperties();
-            //Calculate velocity based on forces
-            //Acceleration is in PIXELS/MS²
-            //F=M*A, so forces are in kG*PIXELS/MS²
-            Vector2f fTotal = new Vector2f(0,0);
-            for(Vector2f force:props.getForces()){
-                fTotal = fTotal.add(force);
-            }
-            Vector2f acceleration = fTotal.divide(props.getMass());
-            props.setVelocity(props.getVelocity().add(acceleration.multiply(deltaT)));
-            //S=m*v
-            //Calculate movement based on velocity
-            //VELOCITY IS IN PIXELS/MS!!!!!!!!!!!!!!!
-            Vector2f vel = props.getVelocity();
-            //TODO: Check collisions before moving
-            props.setLocation(props.getLocation().add(vel.multiply(deltaT)));
+        for(GameObject object:w.getObjects()){
+            object.getProperties().setLocation(nextLocation(deltaT, object));
             checkAllCollisions(w);
+        }
+    }
+
+    private static Vector2f nextLocation(long deltaT, GameObject object) {
+        PhysicsProperties props = object.getProperties();
+        //Calculate velocity based on forces
+        //Acceleration is in PIXELS/MS²
+        //F=M*A, so forces are in kG*PIXELS/MS²
+        Vector2f fTotal = new Vector2f(0,0);
+        for(Vector2f force:props.getForces()){
+            fTotal = fTotal.add(force);
+        }
+        Vector2f acceleration = fTotal.divide(props.getMass());
+        props.setVelocity(props.getVelocity().add(acceleration.multiply(deltaT)));
+        //S=m*v
+        //Calculate movement based on velocity
+        //VELOCITY IS IN PIXELS/MS!!!!!!!!!!!!!!!
+        Vector2f vel = props.getVelocity();
+        return props.getLocation().add(vel.multiply(deltaT));
+    }
+    private static void checkAllCollisions2(World w) {
+        for(GameObject obj:w.getObjects()){
+            checkEdgeCollision(w, obj);
+        }
+        Graph<GameObject> collisionGraph = new Graph<>();
+
+        //1º Calculate grid size based on screen properties
+        Graph<GameObject> regionsMap = getRegionsMap2(w);
+        for(GameObject obj: regionsMap.getVertices()){
+            //Get objects in same region
+            List<GameObject> objects = regionsMap.getRelations(obj);
+
+            //Log.i("NedCore","Possible collision!");
+            for(GameObject obj2: objects){
+                //Only check once for every pair of objects
+                if(!collisionGraph.edgeExsists(obj,obj2)) {
+                    checkCollision(w,obj, obj2);
+                    collisionGraph.addEdge(obj,obj2);
+                }
+            }
         }
     }
 
     private static void checkAllCollisions(World w) {
         for(GameObject obj:w.getObjects()){
-            //Check collisions with screen edges
-            PhysicsProperties props  = obj.getProperties();
-            BoundingBox box = obj.getBoundingBox();
-            Vector2f vel = props.getVelocity();
-            if( vel.getX()<0 && box.getP1().getX() <= 0){
-                Vector2f newVel = new Vector2f(-vel.getX(), vel.getY());
-                props.setVelocity(newVel);
-                props.setLocation(new Vector2f(0,props.getLocation().getY()));
-                //TODO left edge collision
-            } else if( vel.getY()<0 && box.getP1().getY() <= 0){
-                Vector2f newVel = new Vector2f(vel.getX()*2/3, -vel.getY()*2/3);
-                props.setVelocity(newVel);
-                props.setLocation(new Vector2f(props.getLocation().getX(),0));
-                //TODO top edge collision
-            } else if( vel.getX()>0 && box.getP2().getX() >= w.getScreenWidth()){
-                Vector2f newVel = new Vector2f(-vel.getX()*2/3, vel.getY());
-                props.setVelocity(newVel);
-                int wObject = box.getP2().getX()-box.getP1().getX();
-                props.setLocation(new Vector2f(w.getScreenWidth()-wObject,
-                        props.getLocation().getY()));
-                //TODO right edge collision
-            } else if( vel.getY()>0 && box.getP2().getY() >= w.getScreenHeight()){
-                Vector2f newVel = new Vector2f(vel.getX(), -vel.getY()*2/3);
-                props.setVelocity(newVel);
-                int hObject = box.getP2().getY()-box.getP1().getY();
-                props.setLocation(new Vector2f(props.getLocation().getX(),
-                        w.getScreenHeight()-hObject));
-                //TODO bottom edge collision
-            }
+            checkEdgeCollision(w, obj);
         }
         Graph<GameObject> collisionGraph = new Graph<>();
 
@@ -95,6 +91,38 @@ public class PhysicsEngine {
                     }
                 }
             }
+        }
+    }
+
+    private static void checkEdgeCollision(World w, GameObject obj) {
+        //Check collisions with screen edges
+        PhysicsProperties props  = obj.getProperties();
+        BoundingBox box = obj.getBoundingBox();
+        Vector2f vel = props.getVelocity();
+        if( vel.getX()<0 && box.getP1().getX() <= 0){
+            Vector2f newVel = new Vector2f(-vel.getX(), vel.getY());
+            props.setVelocity(newVel);
+            props.setLocation(new Vector2f(0,props.getLocation().getY()));
+            //TODO left edge collision
+        } else if( vel.getY()<0 && box.getP1().getY() <= 0){
+            Vector2f newVel = new Vector2f(vel.getX()*2/3, -vel.getY()*2/3);
+            props.setVelocity(newVel);
+            props.setLocation(new Vector2f(props.getLocation().getX(),0));
+            //TODO top edge collision
+        } else if( vel.getX()>0 && box.getP2().getX() >= w.getScreenWidth()){
+            Vector2f newVel = new Vector2f(-vel.getX()*2/3, vel.getY());
+            props.setVelocity(newVel);
+            int wObject = box.getP2().getX()-box.getP1().getX();
+            props.setLocation(new Vector2f(w.getScreenWidth()-wObject,
+                    props.getLocation().getY()));
+            //TODO right edge collision
+        } else if( vel.getY()>0 && box.getP2().getY() >= w.getScreenHeight()){
+            Vector2f newVel = new Vector2f(vel.getX(), -vel.getY()*2/3);
+            props.setVelocity(newVel);
+            int hObject = box.getP2().getY()-box.getP1().getY();
+            props.setLocation(new Vector2f(props.getLocation().getX(),
+                    w.getScreenHeight()-hObject));
+            //TODO bottom edge collision
         }
     }
 
@@ -149,6 +177,21 @@ public class PhysicsEngine {
         return points;
     }
 
+
+    private static Graph<GameObject> getRegionsMap2(World world){
+        final int collisionDistance = 100;
+        Graph<GameObject> graph = new Graph<>(world.getObjects());
+        for(int i=0; i<world.getObjects().size()-1; i++){
+            for(int j=i; j<world.getObjects().size(); j++){
+                Vector2f location1 = world.getObjects().get(i).getProperties().getLocation();
+                Vector2f location2 = world.getObjects().get(j).getProperties().getLocation();
+                if(location1.sub(location2).getMod()<=collisionDistance){
+                    graph.addEdge(world.getObjects().get(i),world.getObjects().get(j));
+                }
+            }
+        }
+        return graph;
+    }
 
 
 }

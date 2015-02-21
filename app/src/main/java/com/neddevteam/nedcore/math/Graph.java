@@ -12,15 +12,6 @@ public class Graph<T> {
     private HashMap<T, List<T>> graph;
 
     /**
-     * Creates a graph from the given HashMap
-     * @param graph Contains every vertex as the keys, and every relation of the vertices as the value
-     *              of each vertex
-     */
-    public Graph(HashMap<T, List<T>> graph){
-        this.graph = graph;
-    }
-
-    /**
      * Creates a graph from the given list of vertices with no relations
      * @param vertices Initial vertices of the graph
      */
@@ -35,7 +26,7 @@ public class Graph<T> {
      * Creates an empty graph
      */
     public Graph(){
-        this(new HashMap<T, List<T>>());
+        this.graph = new HashMap<>();
     }
 
     /**
