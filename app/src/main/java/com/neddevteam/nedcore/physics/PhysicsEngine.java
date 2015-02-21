@@ -185,10 +185,26 @@ public class PhysicsEngine {
         Graph<GameObject> graph = new Graph<>(world.getObjects());
         for(int i=0; i<world.getObjects().size()-1; i++){
             for(int j=i; j<world.getObjects().size(); j++){
-                Vector2f location1 = world.getObjects().get(i).getProperties().getLocation();
-                Vector2f location2 = world.getObjects().get(j).getProperties().getLocation();
-                if(location1.sub(location2).getMod()<=collisionDistance){
-                    graph.addEdge(world.getObjects().get(i),world.getObjects().get(j));
+                GameObject obj1 = world.getObjects().get(i);
+                GameObject obj2 = world.getObjects().get(j);
+                Vector2f[] obj1points = {
+                        obj1.getProperties().getLocation(),
+                        new Vector2f(obj1.getBoundingBox().getP2().getX(),obj1.getBoundingBox().getP1().getY()),
+                        new Vector2f(obj1.getBoundingBox().getP1().getX(),obj1.getBoundingBox().getP2().getY()),
+                        new Vector2f(obj1.getBoundingBox().getP2().getX(),obj1.getBoundingBox().getP2().getY()),
+                };
+                Vector2f[] obj2points = {
+                        obj2.getProperties().getLocation(),
+                        new Vector2f(obj2.getBoundingBox().getP2().getX(),obj2.getBoundingBox().getP1().getY()),
+                        new Vector2f(obj2.getBoundingBox().getP1().getX(),obj2.getBoundingBox().getP2().getY()),
+                        new Vector2f(obj2.getBoundingBox().getP2().getX(),obj2.getBoundingBox().getP2().getY()),
+                };
+                for(Vector2f point1: obj1points){
+                    for(Vector2f point2: obj2points){
+                        if(point1.sub(point2).getMod()<=collisionDistance){
+                            graph.addEdge(world.getObjects().get(i),world.getObjects().get(j));
+                        }
+                    }
                 }
             }
         }
