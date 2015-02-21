@@ -57,6 +57,8 @@ public class Graph<T> {
      * @param vertex2
      */
     public void addEdge(T vertex1, T vertex2){
+        if(vertex1.equals(vertex2)) return;
+
         //Add vertex2 to the list of vertex1's relations
         List<T> edges;
         if(!graph.containsKey(vertex1)){

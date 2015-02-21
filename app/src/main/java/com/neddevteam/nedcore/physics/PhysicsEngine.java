@@ -63,7 +63,6 @@ public class PhysicsEngine {
             for(GameObject obj2: objects){
                 //Only check once for every pair of objects
                 if(!collisionGraph.edgeExsists(obj,obj2)) {
-                    //TODO: objects are chcking collisions with themselves!!!
                     checkCollision(w,obj, obj2);
                     collisionGraph.addEdge(obj,obj2);
                 }
@@ -182,7 +181,7 @@ public class PhysicsEngine {
 
 
     private static Graph<GameObject> getRegionsMap2(World world){
-        final int collisionDistance = 100;
+        final int collisionDistance = 500;
         Graph<GameObject> graph = new Graph<>(world.getObjects());
         for(int i=0; i<world.getObjects().size()-1; i++){
             for(int j=i; j<world.getObjects().size(); j++){
