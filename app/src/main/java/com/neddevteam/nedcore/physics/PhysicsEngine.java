@@ -24,7 +24,7 @@ public class PhysicsEngine {
         //long deltaT = 50;
         for(GameObject object:w.getObjects()){
             object.getProperties().setLocation(nextLocation(deltaT, object));
-            checkAllCollisions(w);
+            checkAllCollisions2(w);
         }
     }
 
@@ -45,6 +45,8 @@ public class PhysicsEngine {
         Vector2f vel = props.getVelocity();
         return props.getLocation().add(vel.multiply(deltaT));
     }
+
+
     private static void checkAllCollisions2(World w) {
         for(GameObject obj:w.getObjects()){
             checkEdgeCollision(w, obj);
@@ -61,6 +63,7 @@ public class PhysicsEngine {
             for(GameObject obj2: objects){
                 //Only check once for every pair of objects
                 if(!collisionGraph.edgeExsists(obj,obj2)) {
+                    //TODO: objects are chcking collisions with themselves!!!
                     checkCollision(w,obj, obj2);
                     collisionGraph.addEdge(obj,obj2);
                 }
