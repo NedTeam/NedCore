@@ -22,9 +22,28 @@ public class PhysicsEngine {
         long t = System.currentTimeMillis();
         long deltaT = Math.abs(t - t0);
         //long deltaT = 50;
-        for(GameObject object:w.getObjects()){
-            object.getProperties().setLocation(nextLocation(deltaT, object));
-            checkAllCollisions2(w);
+        
+        Graph<GameObject> collisionGraph = new Graph<>();
+
+        //1º Calculate grid size based on screen properties
+        Graph<GameObject> regionsMap = getRegionsMap2(w);
+        for(GameObject obj: regionsMap.getVertices()){
+            checkEdgeCollision(w, obj);
+
+            //Get objects in same region
+            List<GameObject> objects = regionsMap.getRelations(obj);
+
+            //Log.i("NedCore","Possible collision!");
+            for(GameObject obj2: objects){
+                //Only check once for every pair of objects
+                if(!collisionGraph.edgeExsists(obj,obj2)) {
+                    checkCollision(w,obj, obj2);
+                    collisionGraph.addEdge(obj,obj2);
+                }
+            }
+
+            obj.getProperties().setLocation(nextLocation(deltaT, obj));
+            //checkAllCollisions2(w);
         }
     }
 
@@ -129,8 +148,8 @@ public class PhysicsEngine {
     }
 
 
-    //Checks if two objects have collided by checking the middle pixel
-    //of the intersection of their bounding boxes
+    /* Checks if two objects have collided by checking the middle pixel
+       of the intersection of their bounding boxes */
     private static void checkCollision(World w,GameObject g1,GameObject g2) {
         BoundingBox intersect = g1.getBoundingBox().intersect(g2.getBoundingBox());
         if(intersect==null)return;
@@ -181,7 +200,12 @@ public class PhysicsEngine {
 
 
     private static Graph<GameObject> getRegionsMap2(World world){
-        final int collisionDistance = 500;
+        /* TODO:
+         *  Instead of an absolute value, this should depend on the
+         *  average size of objects in the world (or maximum)
+         */
+        final int collisionDistance = 300;
+
         Graph<GameObject> graph = new Graph<>(world.getObjects());
         for(int i=0; i<world.getObjects().size()-1; i++){
             for(int j=i; j<world.getObjects().size(); j++){
