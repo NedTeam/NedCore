@@ -23,18 +23,34 @@ public class CollisionHandler implements Listener {
 
         float massSum = props1.getMass() + props2.getMass();
         float massDiff = props1.getMass() - props2.getMass();
-        double u1 = props1.getVelocity().getMod();
-        double u2 = props2.getVelocity().getMod();
 
-        float v1 = (float)(u1*massDiff + 2*props2.getMass()*u2)/massSum;
-        float v2 = (float)(u2*massDiff*(-1) + 2*props1.getMass()*u1)/massSum;
+        Vector2f contactDir = props2.getLocation().sub(props1.getLocation()).normalized();
 
-        //float v1 = (float)(props2.getVelocity().getMod()*props2.getMass())/props1.getMass();
-        //float v2 = (float)(props1.getVelocity().getMod()*props1.getMass())/props2.getMass();
-        Vector2f dir2 = props2.getLocation().sub(props1.getLocation()).normalized();
-        Vector2f dir1 = dir2.multiply(-1);
-        props1.setVelocity(dir1.multiply(v1));
-        props2.setVelocity(dir2.multiply(v2));
+        /*Velocities are named 'u' if they represent initial velocities (before the collision
+        * happened), and 'v' if they are final (after the collision). The x and y axes used
+        * here don't line up with the ones the vectors use: variables marked 'x' follow the
+        * direction of 'contactDir', while variables marked 'y' are simply perpendicular to
+        * that direction.
+        *
+        * The collision is checked using 1-dimension collision laws with the component of
+        * the velocity along the contact direction (hence 'x' and 'y' splitting relative to
+        * it). The velocity obtained is then added to the original 'y' component of the
+        * velocity ('y' as in perpendicular to 'contactDir') to obtain the final value.*/
+
+        float u1x = props1.getVelocity().dot(contactDir);
+        float u2x = props2.getVelocity().dot(contactDir);
+
+        Vector2f u1y = props1.getVelocity().sub(contactDir.multiply(u1x));
+        Vector2f u2y = props2.getVelocity().sub(contactDir.multiply(u2x));
+
+        float v1x = (u1x*massDiff + 2*props2.getMass()*u2x)/massSum;
+        float v2x = (u2x*massDiff*(-1) + 2*props1.getMass()*u1x)/massSum;
+
+        Vector2f v1 = contactDir.multiply(v1x).add(u1y);
+        Vector2f v2 = contactDir.multiply(v2x).add(u2y);
+
+        props1.setVelocity(v1);
+        props2.setVelocity(v2);
 
     }
 }

@@ -52,4 +52,8 @@ public class Vector2f {
     public Vector2f normalized() {
         return divide((float)getMod());
     }
+
+    public float dot(Vector2f v2) {
+        return x*v2.getX() + y*v2.getY();
+    }
 }
