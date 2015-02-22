@@ -20,6 +20,7 @@ public class RenderingView extends View{
 
     private List<Layer> layers = new ArrayList<Layer>();
     private LayerComparator comparator = new LayerComparator();
+    private long renderTime;
 
     public RenderingView(Context context) {
         super(context);
@@ -27,9 +28,14 @@ public class RenderingView extends View{
 
     @Override
     public void onDraw(Canvas canvas){
+        long start = System.currentTimeMillis();
+
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         /*Collections.sort(layers, new LayerComparator());*/
         RenderingManager.renderLayers(canvas,layers);
+
+        long end = System.currentTimeMillis();
+        renderTime = start - end;
     }
 
     public void addLayer(Layer l){
@@ -42,5 +48,9 @@ public class RenderingView extends View{
 
     public void removeLayer(int i) {
         layers.remove(i);
+    }
+
+    public long getLastRenderTime() {
+        return renderTime;
     }
 }

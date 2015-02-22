@@ -20,8 +20,17 @@ public class CollisionHandler implements Listener {
         GameObject obj2 = event.getObj2();
         PhysicsProperties props1 = obj1.getProperties();
         PhysicsProperties props2 = obj2.getProperties();
-        float v1 = (float)(props2.getVelocity().getMod()*props2.getMass())/props1.getMass();
-        float v2 = (float)(props1.getVelocity().getMod()*props1.getMass())/props2.getMass();
+
+        float massSum = props1.getMass() + props2.getMass();
+        float massDiff = props1.getMass() - props2.getMass();
+        double u1 = props1.getVelocity().getMod();
+        double u2 = props2.getVelocity().getMod();
+
+        float v1 = (float)(u1*massDiff + 2*props2.getMass()*u2)/massSum;
+        float v2 = (float)(u2*massDiff*(-1) + 2*props1.getMass()*u1)/massSum;
+
+        //float v1 = (float)(props2.getVelocity().getMod()*props2.getMass())/props1.getMass();
+        //float v2 = (float)(props1.getVelocity().getMod()*props1.getMass())/props2.getMass();
         Vector2f dir2 = props2.getLocation().sub(props1.getLocation()).normalized();
         Vector2f dir1 = dir2.multiply(-1);
         props1.setVelocity(dir1.multiply(v1));

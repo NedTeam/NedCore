@@ -133,4 +133,13 @@ public class Graph<T> {
         return graph.get(vertex1).contains(vertex2);
     }
 
+    /**
+     *
+     * @param vertex
+     * @return Whether {@code vertex} belongs to the graph
+     */
+    public boolean vertexExists(T vertex){
+        return graph.containsKey(vertex);
+    }
+
 }
