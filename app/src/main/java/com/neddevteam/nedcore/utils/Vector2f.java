@@ -5,8 +5,8 @@ package com.neddevteam.nedcore.utils;
  */
 public class Vector2f {
 
-    private float x;
-    private float y;
+    private final float x;
+    private final float y;
 
     public Vector2f(float x,float y){
         this.x = x;
@@ -17,16 +17,8 @@ public class Vector2f {
         return x;
     }
 
-    public void setX(float x) {
-        this.x = x;
-    }
-
     public float getY() {
         return y;
-    }
-
-    public void setY(float y) {
-        this.y = y;
     }
 
     public double getMod() {

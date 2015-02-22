@@ -37,6 +37,8 @@ public class CollisionHandler implements Listener {
         * it). The velocity obtained is then added to the original 'y' component of the
         * velocity ('y' as in perpendicular to 'contactDir') to obtain the final value.*/
 
+        //Since 'contactDir' is normalized, these dot products give the module of the
+        //velocity projected onto such direction: v·cd = |v||cd|cos(a) = |v|cos(a)
         float u1x = props1.getVelocity().dot(contactDir);
         float u2x = props2.getVelocity().dot(contactDir);
 
