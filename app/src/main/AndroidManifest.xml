@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="costumefrenzy.nedteam.com.costumefrenzy" >
+    package="com.neddevteam.nedcore" >
     <uses-sdk
         android:minSdkVersion="15"
         android:targetSdkVersion="21" />

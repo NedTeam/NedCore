@@ -22,29 +22,12 @@ public class PhysicsEngine {
         long t = System.currentTimeMillis();
         long deltaT = Math.abs(t - t0);
         //long deltaT = 50;
-        
-        Graph<GameObject> collisionGraph = new Graph<>();
 
-        //1º Calculate grid size based on screen properties
-        Graph<GameObject> regionsMap = getRegionsMap2(w);
-        for(GameObject obj: regionsMap.getVertices()){
-            checkEdgeCollision(w, obj);
+        checkAllCollisions(w);
 
-            //Get objects in same region
-            List<GameObject> objects = regionsMap.getRelations(obj);
-
-            //Log.i("NedCore","Possible collision!");
-            for(GameObject obj2: objects){
-                //Only check once for every pair of objects
-                if(!collisionGraph.edgeExsists(obj,obj2)) {
-                    checkCollision(w,obj, obj2);
-                    collisionGraph.addEdge(obj,obj2);
-                }
-            }
-
+        for(GameObject obj: w.getObjects())
             obj.getProperties().setLocation(nextLocation(deltaT, obj));
-            //checkAllCollisions2(w);
-        }
+
     }
 
     private static Vector2f nextLocation(long deltaT, GameObject object) {
@@ -66,15 +49,14 @@ public class PhysicsEngine {
     }
 
 
-    private static void checkAllCollisions2(World w) {
-        for(GameObject obj:w.getObjects()){
-            checkEdgeCollision(w, obj);
-        }
+    private static void checkAllCollisions(World w) {
         Graph<GameObject> collisionGraph = new Graph<>();
 
         //1º Calculate grid size based on screen properties
         Graph<GameObject> regionsMap = getRegionsMap2(w);
         for(GameObject obj: regionsMap.getVertices()){
+            checkEdgeCollision(w, obj);
+
             //Get objects in same region
             List<GameObject> objects = regionsMap.getRelations(obj);
 
@@ -89,31 +71,6 @@ public class PhysicsEngine {
         }
     }
 
-    private static void checkAllCollisions(World w) {
-        for(GameObject obj:w.getObjects()){
-            checkEdgeCollision(w, obj);
-        }
-        Graph<GameObject> collisionGraph = new Graph<>();
-
-        //1º Calculate grid size based on screen properties
-        HashMap<Point,List<GameObject>> gridData = getRegionsMap(w);
-        //Get objects in same region
-        for(Point p:gridData.keySet()){
-            List<GameObject> objects = gridData.get(p);
-            if(objects.size()!=1){
-                //Log.i("NedCore","Possible collision!");
-                for(int i=0;i<objects.size()-1;i++){
-                    for(int j=i+1;j<objects.size();j++){
-                        //Only check once for every pair of objects
-                        if(!collisionGraph.edgeExsists(objects.get(i),objects.get(j))) {
-                            checkCollision(w,objects.get(i), objects.get(j));
-                            collisionGraph.addEdge(objects.get(i),objects.get(j));
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     private static void checkEdgeCollision(World w, GameObject obj) {
         //Check collisions with screen edges
@@ -161,12 +118,14 @@ public class PhysicsEngine {
         Point rel2 = new Point((int)(mid.getX()-g2.getProperties().getLocation().getX()),
                 (int)(mid.getY()-g2.getProperties().getLocation().getY()));
         boolean isG1 = BitmapUtils.checkAlpha(g1.getTexture().getBitmap(),rel1.getX(),rel1.getY());
-       boolean isG2 = BitmapUtils.checkAlpha(g2.getTexture().getBitmap(),rel2.getX(),rel2.getY());
+       boolean isG2 = BitmapUtils.checkAlpha(g2.getTexture().getBitmap(), rel2.getX(), rel2.getY());
         if(isG1 && isG2 && !w.getColliding().edgeExsists(g1,g2)){
             EventManager.callEvent(new CollisionEvent(g1,g2));
             w.getColliding().addEdge(g1,g2);
         }else if(!(isG1 && isG2) && w.getColliding().edgeExsists(g1,g2)){
             w.getColliding().removeEdge(g1,g2);
+        } else if(isG1 && isG2 && w.getColliding().edgeExsists(g1,g2)) {
+            //TODO: adjust position
         }
     }
 

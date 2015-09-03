@@ -18,7 +18,7 @@ import com.neddevteam.nedcore.render.RenderingView;
 import com.neddevteam.nedcore.utils.Point;
 import com.neddevteam.nedcore.utils.Vector2f;
 
-import costumefrenzy.nedteam.com.costumefrenzy.R;
+import com.neddevteam.nedcore.R;
 
 /**
  * Created by mcat on 7/02/15.

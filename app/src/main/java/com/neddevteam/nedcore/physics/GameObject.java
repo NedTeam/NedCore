@@ -5,16 +5,23 @@ import com.neddevteam.nedcore.utils.BoundingBox;
 import com.neddevteam.nedcore.utils.Point;
 import com.neddevteam.nedcore.utils.Vector2f;
 
+import java.util.Objects;
+
 /**
  * Created by mcat on 11/02/15.
  */
 public class GameObject {
     private BitmapDrawable texture;
     private PhysicsProperties properties;
+    private static int nObjects;
+
+
+    private int id;
 
     public GameObject(BitmapDrawable texture, PhysicsProperties properties){
         this.texture = texture;
         this.properties = properties;
+        id = nObjects++;
     }
 
     public BitmapDrawable getTexture() {
@@ -32,6 +39,26 @@ public class GameObject {
     public BoundingBox getBoundingBox() {
         return new BoundingBox(new Point(properties.getLocation()),
                 texture.getBitmap().getWidth(),texture.getBitmap().getHeight());
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null || !(o instanceof GameObject))
+            return false;
+        if(o == this)
+            return true;
+
+        GameObject go = (GameObject) o;
+        return id == go.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return 11*id;
     }
 
 }

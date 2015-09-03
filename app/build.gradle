@@ -5,7 +5,7 @@ android {
     buildToolsVersion "21.0.1"
 
     defaultConfig {
-        applicationId "costumefrenzy.nedteam.com.costumefrenzy"
+        applicationId "com.neddevteam.nedcore"
         minSdkVersion 19
         targetSdkVersion 21
         versionCode 1
