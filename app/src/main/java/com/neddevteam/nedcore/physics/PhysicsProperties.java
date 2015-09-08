@@ -45,7 +45,12 @@ public class PhysicsProperties {
         forces.add(force);
     }
 
+    public void removeForce(Vector2f force) {
+        forces.remove(force);
+    }
+
     public float getMass() {
         return mass;
     }
+
 }

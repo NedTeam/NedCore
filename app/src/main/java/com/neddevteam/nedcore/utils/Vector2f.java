@@ -13,6 +13,11 @@ public class Vector2f {
         this.y = y;
     }
 
+    public Vector2f(Vector2f v) {
+        this.x = v.getX();
+        this.y = v.getY();
+    }
+
     public float getX() {
         return x;
     }
@@ -22,7 +27,8 @@ public class Vector2f {
     }
 
     public double getMod() {
-        return Math.sqrt(x*x+y*y);
+        return Math.sqrt(x*x+y*y); // sqrt() is a very complicated operation, we should
+                                   // consider approximating it
     }
 
     public Vector2f divide(float value){
@@ -47,5 +53,21 @@ public class Vector2f {
 
     public float dot(Vector2f v2) {
         return x*v2.getX() + y*v2.getY();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o)
+            return true;
+        if(o == null || !(o instanceof Vector2f))
+            return false;
+
+        Vector2f v = (Vector2f) o;
+        return x == v.getX() && y == v.getY();
+    }
+
+    @Override
+    public int hashCode(){
+        return (int)(100*x + 100*y);
     }
 }

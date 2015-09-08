@@ -2,13 +2,14 @@ package com.neddevteam.nedcore.physics.shape;
 
 import com.neddevteam.nedcore.utils.BoundingBox;
 import com.neddevteam.nedcore.utils.Point;
+import com.neddevteam.nedcore.utils.Vector2f;
 
 /**
  * Created by gdefermin on 9/3/15.
  */
 public class Triangle implements Shape{
     private final Point[] vertices;
-    private Point center;
+    private Vector2f center;
 
     /**
      * Creates a triangle from 3 vertices and a center.
@@ -17,12 +18,12 @@ public class Triangle implements Shape{
      * @param vertices an array of 3 vertices
      * @param center center of the triangle
      */
-    public Triangle(Point[] vertices, Point center) {
+    public Triangle(Vector2f center, Point[] vertices) {
         this.vertices = new Point[3];
         for(int i=0; i<3; i++) {
             this.vertices[i] = new Point(vertices[i]);
         }
-        this.center = new Point(center);
+        this.center = new Vector2f(center);
     }
 
     public Point[] getVertices() {
@@ -30,12 +31,12 @@ public class Triangle implements Shape{
     }
 
     @Override
-    public Point getCenter() {
+    public Vector2f getCenter() {
         return center;
     }
 
     @Override
-    public void setCenter(Point center) {
+    public void setCenter(Vector2f center) {
         this.center = center;
     }
 
@@ -47,7 +48,7 @@ public class Triangle implements Shape{
         int maxX = Integer.MIN_VALUE;
         int maxY = Integer.MIN_VALUE;
         for (int i = 0; i < 3; i++) {
-            absoluteVertices[i] = new Point(center.getX() + vertices[i].getX(), center.getY() + vertices[i].getY());
+            absoluteVertices[i] = new Point((int)center.getX() + vertices[i].getX(), (int)center.getY() + vertices[i].getY());
             if(absoluteVertices[i].getX() < minX)
                 minX = absoluteVertices[i].getX();
             if(absoluteVertices[i].getY() < minY)

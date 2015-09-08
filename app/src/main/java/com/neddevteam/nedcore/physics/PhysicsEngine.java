@@ -1,8 +1,13 @@
 package com.neddevteam.nedcore.physics;
 
+import android.util.Log;
+
 import com.neddevteam.nedcore.event.EventManager;
 import com.neddevteam.nedcore.event.predefined.CollisionEvent;
 import com.neddevteam.nedcore.math.Graph;
+import com.neddevteam.nedcore.physics.shape.Circle;
+import com.neddevteam.nedcore.physics.shape.Shape;
+import com.neddevteam.nedcore.physics.shape.ShapeType;
 import com.neddevteam.nedcore.utils.BitmapUtils;
 import com.neddevteam.nedcore.utils.BoundingBox;
 import com.neddevteam.nedcore.utils.Point;
@@ -26,7 +31,7 @@ public class PhysicsEngine {
         checkAllCollisions(w);
 
         for(GameObject obj: w.getObjects())
-            obj.getProperties().setLocation(nextLocation(deltaT, obj));
+            obj.setLocation(nextLocation(deltaT, obj));
 
     }
 
@@ -105,28 +110,66 @@ public class PhysicsEngine {
     }
 
 
-    /* Checks if two objects have collided by checking the middle pixel
-       of the intersection of their bounding boxes */
+    /* Checks if two objects are colliding (narrow phase)*/
     private static void checkCollision(World w,GameObject g1,GameObject g2) {
+        // First check if their bounding boxes are intersecting
         BoundingBox intersect = g1.getBoundingBox().intersect(g2.getBoundingBox());
-        if(intersect==null)return;
-        //Log.i("NedCore",g1.getBoundingBox()+" U "+g2.getBoundingBox()+" = "+intersect.toString());
-        Point mid = new Point((intersect.getP1().getX()+intersect.getP2().getX())/2,
-                (intersect.getP1().getY()+intersect.getP2().getY())/2);
-        Point rel1 = new Point((int)(mid.getX()-g1.getProperties().getLocation().getX()),
-                (int)(mid.getY()-g1.getProperties().getLocation().getY()));
-        Point rel2 = new Point((int)(mid.getX()-g2.getProperties().getLocation().getX()),
-                (int)(mid.getY()-g2.getProperties().getLocation().getY()));
-        boolean isG1 = BitmapUtils.checkAlpha(g1.getTexture().getBitmap(),rel1.getX(),rel1.getY());
-       boolean isG2 = BitmapUtils.checkAlpha(g2.getTexture().getBitmap(), rel2.getX(), rel2.getY());
-        if(isG1 && isG2 && !w.getColliding().edgeExsists(g1,g2)){
+        if(intersect==null)
+            return; //Objects can't be intersecting
+
+        Point collisionPoint = checkContact(g1.getShape(), g2.getShape());
+
+        if(collisionPoint != null && !w.getColliding().edgeExsists(g1,g2)){
             EventManager.callEvent(new CollisionEvent(g1,g2));
             w.getColliding().addEdge(g1,g2);
-        }else if(!(isG1 && isG2) && w.getColliding().edgeExsists(g1,g2)){
-            w.getColliding().removeEdge(g1,g2);
-        } else if(isG1 && isG2 && w.getColliding().edgeExsists(g1,g2)) {
+        }else if(collisionPoint == null && w.getColliding().edgeExsists(g1,g2)){
+            w.getColliding().removeEdge(g1, g2);
+        } else if(collisionPoint != null && w.getColliding().edgeExsists(g1,g2)) {
             //TODO: adjust position
         }
+    }
+
+    /**
+     * Checks if two shapes are colliding
+     *
+     * @param s1
+     * @param s2
+     * @return The collision point of two shapes or null if not colliding
+     */
+    private static Point checkContact(Shape s1, Shape s2) {
+        Point collisionPoint = null;
+
+        switch (s1.getShapeType()) {
+            case CIRCLE:
+                Circle c1 = (Circle) s1;
+                switch (s2.getShapeType()){
+                    case CIRCLE:
+                        Circle c2 = (Circle) s2;
+
+                        int radSum = (c1.getRadius() + c2.getRadius());
+
+
+                        double distance = s1.getCenter().sub(s2.getCenter()).getMod();
+
+                        if(radSum >= distance) {
+                            collisionPoint = new Point(
+                                    ((int)c1.getCenter().getX()+(int)c2.getCenter().getX())/2,
+                                    ((int)c1.getCenter().getY()+(int)c2.getCenter().getY())/2
+                            );
+                        }
+
+                }
+                break;
+            case RECTANGLE:
+
+                break;
+            case TRIANGLE:
+
+                break;
+            default:
+                Log.e("NedCore", "Unknown shape");
+        }
+        return collisionPoint;
     }
 
     //Checks which object is in which subdivision of the World

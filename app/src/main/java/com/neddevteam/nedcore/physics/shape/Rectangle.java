@@ -2,28 +2,29 @@ package com.neddevteam.nedcore.physics.shape;
 
 import com.neddevteam.nedcore.utils.BoundingBox;
 import com.neddevteam.nedcore.utils.Point;
+import com.neddevteam.nedcore.utils.Vector2f;
 
 /**
  * Created by gdefermin on 9/3/15.
  */
 public class Rectangle implements Shape{
-    private Point center;
+    private Vector2f center;
     private final int width;
     private final int height;
 
-    public Rectangle(int width, int height, Point center){
+    public Rectangle(Vector2f center, int width, int height){
         this.width = width;
         this.height = height;
-        this.center = new Point(center);
+        this.center = new Vector2f(center);
     }
 
     @Override
-    public Point getCenter() {
+    public Vector2f getCenter() {
         return center;
     }
 
     @Override
-    public void setCenter(Point center) {
+    public void setCenter(Vector2f center) {
         this.center = center;
     }
 
@@ -38,8 +39,8 @@ public class Rectangle implements Shape{
     @Override
     public BoundingBox getBoundingBox() {
         return new BoundingBox(
-                new Point(center.getX()-width/2,center.getY()-height/2),
-                new Point(center.getX()+width/2,center.getY()+height/2)
+                new Point((int)center.getX()-width/2, (int)center.getY()-height/2),
+                new Point((int)center.getX()+width/2, (int)center.getY()+height/2)
         );
     }
 
