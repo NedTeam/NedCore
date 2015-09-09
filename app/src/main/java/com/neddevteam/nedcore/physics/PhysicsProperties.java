@@ -1,5 +1,6 @@
 package com.neddevteam.nedcore.physics;
 
+import com.neddevteam.nedcore.physics.shape.Shape;
 import com.neddevteam.nedcore.utils.Vector2f;
 
 import java.util.ArrayList;
@@ -13,9 +14,11 @@ public class PhysicsProperties {
     private List<Vector2f> forces = new ArrayList<Vector2f>();
     private Vector2f location;
     private Vector2f velocity;
+    private Shape shape;
     private int mass;
 
-    public PhysicsProperties(Vector2f location, int mass){
+    public PhysicsProperties(Vector2f location, int mass, Shape shape){
+        this.shape = shape; //Temporary
         this.location = location;
         this.mass = mass;
         velocity = new Vector2f(0,0);
@@ -31,6 +34,7 @@ public class PhysicsProperties {
 
     public void setLocation(Vector2f location) {
         this.location = location;
+        shape.setCenter(location);
     }
 
     public Vector2f getVelocity() {
@@ -53,4 +57,7 @@ public class PhysicsProperties {
         return mass;
     }
 
+    public Shape getShape() {
+        return shape;
+    }
 }

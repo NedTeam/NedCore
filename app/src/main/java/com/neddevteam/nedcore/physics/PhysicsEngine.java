@@ -31,7 +31,7 @@ public class PhysicsEngine {
         checkAllCollisions(w);
 
         for(GameObject obj: w.getObjects())
-            obj.setLocation(nextLocation(deltaT, obj));
+            obj.getProperties().setLocation(nextLocation(deltaT, obj));
 
     }
 
@@ -117,15 +117,45 @@ public class PhysicsEngine {
         if(intersect==null)
             return; //Objects can't be intersecting
 
-        Point collisionPoint = checkContact(g1.getShape(), g2.getShape());
+        Manifold manifold = checkContact(
+                g1.getProperties().getShape(),
+                g2.getProperties().getShape()
+        );
 
-        if(collisionPoint != null && !w.getColliding().edgeExsists(g1,g2)){
-            EventManager.callEvent(new CollisionEvent(g1,g2));
-            w.getColliding().addEdge(g1,g2);
-        }else if(collisionPoint == null && w.getColliding().edgeExsists(g1,g2)){
+        if(manifold != null){
+            // 1. Adjust position
+            //TODO: non-circles
+
+            Circle g1Shape = (Circle) g1.getProperties().getShape();
+            Circle g2Shape = (Circle) g2.getProperties().getShape();
+
+            if(g1.getProperties().getLocation().getX() > manifold.getPoint().getX() ||
+               g1.getProperties().getLocation().getY() > manifold.getPoint().getY()  ) {
+
+                g1.getProperties().setLocation(
+                        manifold.getPoint().add(manifold.getNormal().multiply(g1Shape.getRadius()))
+                );
+
+                g2.getProperties().setLocation(
+                        manifold.getPoint().sub(manifold.getNormal().multiply(g2Shape.getRadius()))
+                );
+            } else {
+                g1.getProperties().setLocation(
+                        manifold.getPoint().sub(manifold.getNormal().multiply(g1Shape.getRadius()))
+                );
+
+                g2.getProperties().setLocation(
+                        manifold.getPoint().add(manifold.getNormal().multiply(g2Shape.getRadius()))
+                );
+            }
+
+            // 2. Resolve collision if necessary
+            if(!w.getColliding().edgeExsists(g1,g2)) {
+                EventManager.callEvent(new CollisionEvent(g1, g2));
+                w.getColliding().addEdge(g1, g2);
+            }
+        } else if(w.getColliding().edgeExsists(g1,g2)){
             w.getColliding().removeEdge(g1, g2);
-        } else if(collisionPoint != null && w.getColliding().edgeExsists(g1,g2)) {
-            //TODO: adjust position
         }
     }
 
@@ -134,10 +164,12 @@ public class PhysicsEngine {
      *
      * @param s1
      * @param s2
-     * @return The collision point of two shapes or null if not colliding
+     * @return The collision manifold of two shapes or null if not colliding
      */
-    private static Point checkContact(Shape s1, Shape s2) {
-        Point collisionPoint = null;
+    private static Manifold checkContact(Shape s1, Shape s2) {
+        Manifold manifold = null;
+        Vector2f point = null;
+        Vector2f normal = null;
 
         switch (s1.getShapeType()) {
             case CIRCLE:
@@ -148,14 +180,16 @@ public class PhysicsEngine {
 
                         int radSum = (c1.getRadius() + c2.getRadius());
 
+                        normal = s1.getCenter().sub(s2.getCenter());
 
-                        double distance = s1.getCenter().sub(s2.getCenter()).getMod();
+                        double distance = normal.getMod();
 
                         if(radSum >= distance) {
-                            collisionPoint = new Point(
-                                    ((int)c1.getCenter().getX()+(int)c2.getCenter().getX())/2,
-                                    ((int)c1.getCenter().getY()+(int)c2.getCenter().getY())/2
+                            point = new Vector2f(
+                                    (c1.getCenter().getX()+c2.getCenter().getX())/2,
+                                    (c1.getCenter().getY()+c2.getCenter().getY())/2
                             );
+                            manifold = new Manifold(point, normal);
                         }
 
                 }
@@ -169,7 +203,7 @@ public class PhysicsEngine {
             default:
                 Log.e("NedCore", "Unknown shape");
         }
-        return collisionPoint;
+        return manifold;
     }
 
     //Checks which object is in which subdivision of the World

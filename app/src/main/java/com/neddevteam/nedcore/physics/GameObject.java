@@ -14,14 +14,12 @@ import java.util.Objects;
 public class GameObject {
     private BitmapDrawable texture;
     private PhysicsProperties properties;
-    private Shape shape;
     private static int nObjects;
 
 
     private int id;
 
-    public GameObject(BitmapDrawable texture, PhysicsProperties properties, Shape shape){
-        this.shape = shape; //Temporary
+    public GameObject(BitmapDrawable texture, PhysicsProperties properties){
         this.texture = texture;
         this.properties = properties;
         id = nObjects++;
@@ -35,11 +33,6 @@ public class GameObject {
         return properties;
     }
 
-    public void setLocation(Vector2f location) {
-        properties.setLocation(location);
-        shape.setCenter(location);
-    }
-
     public void applyForce(Vector2f force){
         properties.addForce(force);
     }
@@ -51,10 +44,6 @@ public class GameObject {
 
     public int getId() {
         return id;
-    }
-
-    public Shape getShape() {
-        return shape;
     }
 
     @Override

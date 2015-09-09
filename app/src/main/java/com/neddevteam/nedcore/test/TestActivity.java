@@ -59,11 +59,11 @@ public class TestActivity extends GameActivity {
         int screenHeight = getResources().getDisplayMetrics().heightPixels - getStatusBarHeight();
         int screenWidth = getResources().getDisplayMetrics().widthPixels;
         World w = new World(new Vector2f(0,0.00098f),layer, view,screenWidth,screenHeight);
-        final GameObject obj = new GameObject(circle,new PhysicsProperties(new Vector2f(50,500),100), new Circle(new Vector2f(50,500),190));
+        final GameObject obj = new GameObject(circle,new PhysicsProperties(new Vector2f(50,500),100, new Circle(new Vector2f(50,500),190)));
         w.addObject(obj);
         //final GameObject obj2 = new GameObject(mine,new PhysicsProperties(new Vector2f(500,50),500));
         //w.addObject(obj2);
-        final GameObject obj3 = new GameObject(circle2,new PhysicsProperties(new Vector2f(50,1000),100), new Circle(new Vector2f(50,1000),190));
+        final GameObject obj3 = new GameObject(circle2,new PhysicsProperties(new Vector2f(50,1000),100, new Circle(new Vector2f(50,1000),190)));
         w.addObject(obj3);
 //        obj.applyForce(new Vector2f(0,0.0198f));
 //        obj2.applyForce(new Vector2f(0,0.0198f));
