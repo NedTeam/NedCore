@@ -1,5 +1,8 @@
 package com.neddevteam.nedcore.physics.shape;
 
+import android.util.Log;
+
+import com.neddevteam.nedcore.physics.Manifold;
 import com.neddevteam.nedcore.utils.BoundingBox;
 import com.neddevteam.nedcore.utils.Point;
 import com.neddevteam.nedcore.utils.Vector2f;
@@ -65,5 +68,25 @@ public class Triangle implements Shape{
     @Override
     public ShapeType getShapeType() {
         return ShapeType.TRIANGLE;
+    }
+
+    @Override
+    public Manifold checkContact(Shape s) {
+        Manifold manifold = null;
+
+        switch(s.getShapeType()){
+            case CIRCLE:
+
+                break;
+            case TRIANGLE:
+
+                break;
+            case RECTANGLE:
+
+                break;
+            default:
+                Log.e("NedCore", "Unknown shape");
+        }
+        return manifold;
     }
 }

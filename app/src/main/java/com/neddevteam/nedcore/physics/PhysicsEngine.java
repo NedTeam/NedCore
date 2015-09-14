@@ -117,8 +117,7 @@ public class PhysicsEngine {
         if(intersect==null)
             return; //Objects can't be intersecting
 
-        Manifold manifold = checkContact(
-                g1.getProperties().getShape(),
+        Manifold manifold = g1.getProperties().getShape().checkContact(
                 g2.getProperties().getShape()
         );
 
@@ -132,22 +131,24 @@ public class PhysicsEngine {
             if(g1.getProperties().getLocation().getX() > manifold.getPoint().getX() ||
                g1.getProperties().getLocation().getY() > manifold.getPoint().getY()  ) {
 
-                g1.getProperties().setLocation(
-                        manifold.getPoint().add(manifold.getNormal().multiply(g1Shape.getRadius()))
-                );
+                GameObject tmp = g1;
+                g1 = g2;
+                g2 = tmp;
 
-                g2.getProperties().setLocation(
-                        manifold.getPoint().sub(manifold.getNormal().multiply(g2Shape.getRadius()))
-                );
-            } else {
-                g1.getProperties().setLocation(
-                        manifold.getPoint().sub(manifold.getNormal().multiply(g1Shape.getRadius()))
-                );
+                Circle tmp2 = g1Shape;
+                g1Shape = g2Shape;
+                g2Shape = tmp2;
 
-                g2.getProperties().setLocation(
-                        manifold.getPoint().add(manifold.getNormal().multiply(g2Shape.getRadius()))
-                );
             }
+
+            g1.getProperties().setLocation(
+                    manifold.getPoint().sub(manifold.getNormal().multiply(g1Shape.getRadius()))
+            );
+
+            g2.getProperties().setLocation(
+                    manifold.getPoint().add(manifold.getNormal().multiply(g2Shape.getRadius()))
+            );
+
 
             // 2. Resolve collision if necessary
             if(!w.getColliding().edgeExsists(g1,g2)) {
@@ -159,52 +160,6 @@ public class PhysicsEngine {
         }
     }
 
-    /**
-     * Checks if two shapes are colliding
-     *
-     * @param s1
-     * @param s2
-     * @return The collision manifold of two shapes or null if not colliding
-     */
-    private static Manifold checkContact(Shape s1, Shape s2) {
-        Manifold manifold = null;
-        Vector2f point = null;
-        Vector2f normal = null;
-
-        switch (s1.getShapeType()) {
-            case CIRCLE:
-                Circle c1 = (Circle) s1;
-                switch (s2.getShapeType()){
-                    case CIRCLE:
-                        Circle c2 = (Circle) s2;
-
-                        int radSum = (c1.getRadius() + c2.getRadius());
-
-                        normal = s1.getCenter().sub(s2.getCenter());
-
-                        double distance = normal.getMod();
-
-                        if(radSum >= distance) {
-                            point = new Vector2f(
-                                    (c1.getCenter().getX()+c2.getCenter().getX())/2,
-                                    (c1.getCenter().getY()+c2.getCenter().getY())/2
-                            );
-                            manifold = new Manifold(point, normal);
-                        }
-
-                }
-                break;
-            case RECTANGLE:
-
-                break;
-            case TRIANGLE:
-
-                break;
-            default:
-                Log.e("NedCore", "Unknown shape");
-        }
-        return manifold;
-    }
 
     //Checks which object is in which subdivision of the World
     private static HashMap<Point,List<GameObject>> getRegionsMap(World w){

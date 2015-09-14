@@ -18,8 +18,8 @@ public class BitmapDrawable implements IDrawable{
     private UUID uuid;
     private boolean visible = true;
 
-    public BitmapDrawable(Point loc, Bitmap bitmap) {
-        this.location = loc;
+    public BitmapDrawable(Point location, Bitmap bitmap) {
+        this.location = location;
         this.bitmap = bitmap;
         uuid = UUID.randomUUID();
     }
